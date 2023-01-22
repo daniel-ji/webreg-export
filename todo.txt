@@ -1,0 +1,2 @@
+Daniel:
+Backend: Delete files after job completion, Schedule cron jobs to delete any files that might have not gotten wiped (delete all files every hour that are more than 5 minutes old)
