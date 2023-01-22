@@ -1,2 +1,37 @@
-Daniel:
-Backend: Delete files after job completion, Schedule cron jobs to delete any files that might have not gotten wiped (delete all files every hour that are more than 5 minutes old)
+- Process image / pdf to create JSON object
+- JSON to ICS format (happens on frontend?)
+- GCal API
+- Oauth API (Users Feature)
+
+Users: 
+    - Need to setup MongoDB / some DB
+
+    - Sign in with Google
+    - Upload Photo
+    - Schedule Created, Can Export
+    - Customizable Export
+    - Sign Out
+
+    - Calendar Feature
+    - View Schedule
+    - Add / Remove / Update / Delete Custom Events
+
+    Groups / Friends Feature
+    - Can add friends and share schedules
+    - Overlay friends schedule
+    - Can create friend groups
+    - Add / Remove Friends
+    - Create / Join / Invite / Edit / Delete Friend Groups
+    - Shared classes feature? 
+
+
+Long Term: Revamp Entire UI
+
+Deployment: 
+- Google Domains
+- Cloudflare
+- Heroku / AWS
+
+Backend: 
+Delete files after job completion, Schedule cron jobs to delete any files that might have not gotten wiped (delete all files every hour that are more than 5 minutes old)
+Throttling requests

@@ -7,3 +7,15 @@ html, body {
     flex-direction: column;
     align-items: center;
 }
+
+.sched-img-prev {
+    border-radius: 0.75rem;
+    border: 0.25rem solid #acacac;
+    max-width: 75%;
+}
+
+.sched-pdf-prev {
+    border-radius: 0.75rem;
+    width: 75%;
+    height: 90vh;
+}
