@@ -1,7 +1,9 @@
-- Process image / pdf to create JSON object
-- JSON to ICS format (happens on frontend?)
-- GCal API
-- Oauth API (Users Feature)
+- Add error handling and error messages
+- Process image / pdf to create JSON object (Owen / Ethan)
+- JSON to ICS format (happens on frontend?) (Emmett)
+- GCal API (???)
+- Oauth API (Users Feature) (???)
+- Filter Out Holidays (Emmett)
 
 Users: 
     - Need to setup MongoDB / some DB
@@ -35,3 +37,5 @@ Deployment:
 Backend: 
 Delete files after job completion, Schedule cron jobs to delete any files that might have not gotten wiped (delete all files every hour that are more than 5 minutes old)
 Throttling requests
+Better loggin system
+Record website hits / analytics

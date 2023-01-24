@@ -70,6 +70,10 @@ export class App extends Component {
 	}
 
 	exportSchedule = () => {
+		if (!this.state.scheduleICS) {
+			return;
+		}
+		
 		saveAs(new Blob([this.state.scheduleICS], {type: "text/plain;charset=utf-8"}), "UCSD Schedule.ics");
 	}
 

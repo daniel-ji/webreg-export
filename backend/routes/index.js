@@ -1,16 +1,19 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
+
+const passport = require('passport')
 
 const multer  = require('multer');
+const app = require('../app');
 const ACCEPTED_IMAGETYPE = ['image/png', 'image/jpeg']
 const ACCEPTED_PDFTYPE = ['application/pdf']
 const TEST_DATA = {
 	class0: {
-		day: "monday",
+		day: "MWF",
 		timeStart: [10, 0],
 		timeFinish: [10, 50],
 		className: "CSE 15L",
-		classTitle: "Software Tools&Techniques Lab",
+		classTitle: "Software Tools & Techniques Lab",
 		classType: "LE",
 		sectionNumber: "BO7",
 		professor: "Politz, Joseph Gibbs",
@@ -100,6 +103,13 @@ router.get('/', (req, res, next) => {
 	return res.sendStatus(200);
 });
 
+router.get('/logout', (req, res, next) => {
+	req.logOut((err) => {
+		if (err) return res.sendStatus(500);
+		res.redirect('/')
+	});
+})
+
 router.post('/convertimage', upload.single('image'), (req, res, next) => {
 	if (!req.file) {
 		return res.sendStatus(400);
@@ -114,6 +124,24 @@ router.post('/convertpdf', upload.single('pdf'), (req, res, next) => {
 	}
 
 	return res.json(JSON.stringify(ICS_TEST_DATA))
+})
+
+router.get('/auth/google', passport.authenticate('google', {
+	scope: ['email', 'profile']
+}))
+
+router.get('/auth/google/callback',
+    passport.authenticate( 'google', {
+        successRedirect: '/auth/google/success',
+        failureRedirect: '/auth/google/failure'
+}));
+
+router.get('/auth/google/success', (req, res, next) => {
+	return res.sendStatus(200);
+})
+
+router.get('/auth/google/failure', (req, res, next) => {
+	return res.sendStatus(200);
 })
 
 module.exports = router;
