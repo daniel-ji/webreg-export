@@ -28,22 +28,50 @@ export class App extends Component {
 		}
 	}
 
+	componentDidMount() {
+		const dragDropSchedule = document.getElementById('drag-drop-schedule');
+		['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+			dragDropSchedule.addEventListener(eventName, (e) => {
+				e.preventDefault();
+				e.stopPropagation();
+			}, false)
+		})
+
+		dragDropSchedule.ondragover = () => {
+			dragDropSchedule.classList.add("dragged-over");
+		}
+		dragDropSchedule.ondragenter = () => {
+			dragDropSchedule.classList.add("dragged-over");
+		}
+		dragDropSchedule.ondragleave = () => {
+			dragDropSchedule.classList.remove("dragged-over");
+		}
+		dragDropSchedule.ondragend = () => {
+			dragDropSchedule.classList.remove("dragged-over");
+		}
+		dragDropSchedule.ondrop = (e) => {
+			dragDropSchedule.classList.remove("dragged-over");
+			this.setSchedule(e.dataTransfer.files[0])
+		}
+
+	}
+
 	setStatus(status, error) {
 		this.setState({scheduleStatus: status, scheduleError: error ?? false});
 	}
 
-	setSchedule = (e) => {
+	setSchedule = (file) => {
 		const scheduleFile = new FormData();
-		const scheduleType = e.target.files[0].type;
+		const scheduleType = file.type;
 		if (scheduleType === 'image/png') {
-			scheduleFile.append("image", e.target.files[0], "schedule.png");
-			const schedulePreview = URL.createObjectURL(e.target.files[0]);
+			scheduleFile.append("image", file, "schedule.png");
+			const schedulePreview = URL.createObjectURL(file);
 	
 			this.setState({scheduleFile, schedulePreview, scheduleType, scheduleData: undefined, scheduleICS: undefined});
 			this.setStatus('')
 		} else if (scheduleType === 'image/jpeg') {
-			scheduleFile.append("image", e.target.files[0], "schedule.jpg");
-			const schedulePreview = URL.createObjectURL(e.target.files[0]);
+			scheduleFile.append("image", file, "schedule.jpg");
+			const schedulePreview = URL.createObjectURL(file);
 	
 			this.setStatus('')
 			this.setState({scheduleFile, schedulePreview, scheduleType, scheduleData: undefined, scheduleICS: undefined});
@@ -77,11 +105,12 @@ export class App extends Component {
 					this.setState({scheduleData: JSON.parse(res.data)})
 					const {error, value} = createEvents(JSON.parse(res.data))
 
-					if (error) {
+					if (error || value === undefined || value.length === 0) {
 						this.setStatus("Error creating schedule. Please try again later.", true)
 						throw error;
 					}
 
+					finished = true;
 					this.setStatus("Done!")
 					this.setState({scheduleData: JSON.parse(res.data), scheduleICS: value}, callback)
 				}).catch(err => {
@@ -94,14 +123,14 @@ export class App extends Component {
 		}
 	}
 
-	downloadSchedule = () => {
+	downloadSchedule = (firstRun = true) => {
 		if (this.state.scheduleType === undefined) {
 			this.setStatus("Please upload a schedule.", true)
 			return;
 		}
 
 		if (!this.state.scheduleICS) {
-			this.sendSchedule(this.downloadSchedule);
+			this.sendSchedule(() => firstRun && this.downloadSchedule(false));
 			return;
 		}
 		
@@ -130,7 +159,10 @@ export class App extends Component {
 					<label htmlFor="setSchedule" className="form-label my-3">Upload your schedule here (PNG / JPG), see example&nbsp;
 						<a href="https://cdn.discordapp.com/attachments/808568263964753931/1076746824217526322/image.png" target="_blank" rel="noreferrer">here</a>:
 					</label>
-					<input className="form-control" type="file" id="setSchedule" accept="image/png, image/jpeg, image/jpg" onChange={this.setSchedule} onClick={(e) => e.target.value = null}/>
+					<input className="form-control my-2" type="file" id="setSchedule" accept="image/png, image/jpeg, image/jpg" onChange={(e) => this.setSchedule(e.target.files[0])} onClick={(e) => e.target.value = null}/>
+					<div className="my-4 no-select" id="drag-drop-schedule">
+						Drag and Drop Schedule Here
+					</div>
 				</div>
 				{this.state.schedulePreview && 
 				<Fragment>
@@ -155,7 +187,7 @@ export class App extends Component {
 				<img className="my-3" src="https://media.discordapp.net/attachments/808568263964753931/1076745772298682428/image.png" alt="Importing the calendar." /><br/>
 				</p>
 				<p className="my-4 footnote">
-				Note: This app is still in very heavy development and contains many bugs. Apologies for any difficulty you may experience while trying to use the app. 
+				Note: This app is not affiliated with UCSD. It is still in very heavy development and contains many bugs. Apologies for any difficulty you may experience while trying to use the app. 
 				<br /><br />
 				To submit feedback (which is greatly appreciated!): <a href="https://forms.gle/iCZ6Fu5Lv9gBEXLk8" target="_blank" rel="noreferrer">https://forms.gle/iCZ6Fu5Lv9gBEXLk8</a>. 
 				Contact daji@ucsd.edu for any further questions / comments / concerns.<br /><br />

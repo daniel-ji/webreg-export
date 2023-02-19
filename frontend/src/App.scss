@@ -8,6 +8,21 @@ html, body {
     align-items: center;
 }
 
+#drag-drop-schedule {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 3px solid grey;
+    border-radius: 5px;
+    padding: 5vh 5vw;
+    cursor: copy;
+    transition: 0.5s;
+}
+
+.dragged-over {
+    background-color: rgb(230, 230, 230);
+}
+
 .sched-img-prev {
     border-radius: 0.75rem;
     border: 0.25rem solid #acacac;
@@ -23,3 +38,13 @@ html, body {
 .footnote {
     width: 50vw;
 }
+
+.no-select {
+    -webkit-touch-callout: none; /* iOS Safari */
+      -webkit-user-select: none; /* Safari */
+       -khtml-user-select: none; /* Konqueror HTML */
+         -moz-user-select: none; /* Old versions of Firefox */
+          -ms-user-select: none; /* Internet Explorer/Edge */
+              user-select: none; /* Non-prefixed version, currently
+                                    supported by Chrome, Edge, Opera and Firefox */
+  }

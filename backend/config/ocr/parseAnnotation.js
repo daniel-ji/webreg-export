@@ -22,7 +22,7 @@ Grade Option: ${courseEvent.gradeOption}, Units: ${courseEvent.units}`,
                 getExamDay(courseEvent) : 
                 getStartDay(new Date(constants.spring2023Start), courseEvent),
             duration: getDuration(courseEvent),
-            location: `${courseEvent.building} ${courseEvent.room}`,
+            location: courseEvent.building === undefined ? undefined : `${courseEvent.building} ${courseEvent.room}`,
             recurrenceRule: getRecurrence(courseEvent, constants.spring2023End) 
         })
     }
@@ -142,8 +142,8 @@ function getJSON(text) {
             }
 
             courseEvent['time'] = splitCourseArray.shift();
-            courseEvent['building'] = splitCourseArray.shift();
-            courseEvent['room'] = splitCourseArray.shift();
+            courseEvent['building'] = splitCourseArray.shift() ?? 'N/A';
+            courseEvent['room'] = splitCourseArray.shift() ?? 'N/A';
 
             courseEvent['courseCode'] = courseCode;
             courseEvent['courseName'] = courseName;

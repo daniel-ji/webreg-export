@@ -872,8 +872,8 @@ const acceptedWeekdays =
 "Sa",
 "Su"];
 
-const spring2023Start = new Date('4/3/2023');
-const spring2023End = new Date('6/10/2023');
+const spring2023Start = new Date('1/9/2023');
+const spring2023End = new Date('3/18/2023');
 
 const weekdays = {'M': 0, 'Tu': 1, 'W': 2, 'Th': 3, 'F': 4, 'Sa': 5, 'Su': 6};
 const splitCourseToEventsAfter = ["Enrolled Drop Change", "Planned Remove Enroll"]
