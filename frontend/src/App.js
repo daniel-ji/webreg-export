@@ -22,7 +22,14 @@ export class App extends Component {
 			scheduleData: undefined,
 			// ics schedule data
 			scheduleICS: undefined,
+			// schedule status message
+			scheduleStatus: '',
+			scheduleError: false,
 		}
+	}
+
+	setStatus(status, error) {
+		this.setState({scheduleStatus: status, scheduleError: error ?? false});
 	}
 
 	setSchedule = (e) => {
@@ -32,39 +39,50 @@ export class App extends Component {
 			scheduleFile.append("image", e.target.files[0], "schedule.png");
 			const schedulePreview = URL.createObjectURL(e.target.files[0]);
 	
-			this.setState({scheduleFile, schedulePreview, scheduleType});
+			this.setState({scheduleFile, schedulePreview, scheduleType, scheduleData: undefined, scheduleICS: undefined});
+			this.setStatus('')
 		} else if (scheduleType === 'image/jpeg') {
 			scheduleFile.append("image", e.target.files[0], "schedule.jpg");
 			const schedulePreview = URL.createObjectURL(e.target.files[0]);
 	
-			this.setState({scheduleFile, schedulePreview, scheduleType});
-		} else if (scheduleType === 'application/pdf') {
-			scheduleFile.append("pdf", e.target.files[0], "schedule.pdf")
-
-			const fileReader = new FileReader();
-			fileReader.onload = (e) => {
-				const schedulePreview = e.target.result;
-				this.setState({scheduleFile, schedulePreview, scheduleType});
-			}
-			fileReader.readAsDataURL(e.target.files[0]);
-		} else {
-			// handle error here
+			this.setStatus('')
+			this.setState({scheduleFile, schedulePreview, scheduleType, scheduleData: undefined, scheduleICS: undefined});
 		}
+		// } else if (scheduleType === 'application/pdf') {
+		// 	scheduleFile.append("pdf", e.target.files[0], "schedule.pdf")
+
+		// 	const fileReader = new FileReader();
+		// 	fileReader.onload = (e) => {
+		// 		const schedulePreview = e.target.result;
+		// 		this.setState({scheduleFile, schedulePreview, scheduleType});
+		// 	}
+		// 	fileReader.readAsDataURL(e.target.files[0]);
+		// } else {
+		// 	// handle error here
+		// }
 	}
 
 	sendSchedule = (callback) => {
 		if (!this.state.sendScheduleDelay) {
 			this.setState({sendScheduleDelay: true}, () => {
+				let finished = false;
+				this.setStatus("Processing...")
+				setTimeout(() => {
+					if (!finished) {
+						this.setStatus("Request is taking a long time. Please try again later.", true)
+					}
+				}, 10000)
 				const requestPath = this.state.scheduleType.includes('image') ? 'convertimage' : 'convertpdf';
 				axios.post(`http://localhost:8000/${requestPath}`, this.state.scheduleFile).then(res => {
 					this.setState({scheduleData: JSON.parse(res.data)})
 					const {error, value} = createEvents(JSON.parse(res.data))
 
 					if (error) {
-						alert("Error creating schedule. Please try again later.")
+						this.setStatus("Error creating schedule. Please try again later.", true)
 						throw error;
 					}
 
+					this.setStatus("Done!")
 					this.setState({scheduleData: JSON.parse(res.data), scheduleICS: value}, callback)
 				}).catch(err => {
 					console.log(err);
@@ -77,6 +95,11 @@ export class App extends Component {
 	}
 
 	downloadSchedule = () => {
+		if (this.state.scheduleType === undefined) {
+			this.setStatus("Please upload a schedule.", true)
+			return;
+		}
+
 		if (!this.state.scheduleICS) {
 			this.sendSchedule(this.downloadSchedule);
 			return;
@@ -86,6 +109,11 @@ export class App extends Component {
 	}
 
 	exportSchedule = () => {
+		if (this.state.scheduleType === undefined) {
+			this.setStatus("Please upload a schedule.", true)
+			return;
+		}
+
 		if (!this.state.scheduleICS) {
 			this.sendSchedule(this.exportSchedule);
 			return;
@@ -99,8 +127,10 @@ export class App extends Component {
 			<div className="App">
 				<h1 className="my-4 text-center">UCSD WebReg Export App</h1>
 				<div className="my-3 d-flex flex-column align-items-center">
-					<label htmlFor="setSchedule" className="form-label my-3">Upload your schedule here (PNG / JPG / PDF):</label>
-					<input className="form-control" type="file" id="setSchedule" accept="image/png, image/jpeg, image/jpg, application/pdf" onChange={this.setSchedule} onClick={(e) => e.target.value = null}/>
+					<label htmlFor="setSchedule" className="form-label my-3">Upload your schedule here (PNG / JPG), see example&nbsp;
+						<a href="https://cdn.discordapp.com/attachments/808568263964753931/1076746824217526322/image.png" target="_blank" rel="noreferrer">here</a>:
+					</label>
+					<input className="form-control" type="file" id="setSchedule" accept="image/png, image/jpeg, image/jpg" onChange={this.setSchedule} onClick={(e) => e.target.value = null}/>
 				</div>
 				{this.state.schedulePreview && 
 				<Fragment>
@@ -109,11 +139,27 @@ export class App extends Component {
 					<object className="sched-pdf-prev" data={this.state.schedulePreview} aria-label="Schedule PDF Preview" />
 					:
 					<img className="sched-img-prev" alt="Schedule Preview" src={this.state.schedulePreview} />
-					}
+				}
 				</Fragment>
 				}
 				<button className="btn btn-primary mt-4 mb-3" onClick={this.downloadSchedule}>Download Schedule (ICS Format)</button>
-				<button className="btn btn-primary my-4" onClick={this.exportSchedule}>Add to Google Calendar</button>
+				<p style={{color: this.state.scheduleError ? "#DC3545" : "#198754"}}>{this.state.scheduleStatus}</p>
+				{/* <button className="btn btn-primary my-4" onClick={this.exportSchedule}>Add to Google Calendar</button> */}
+				<p className="my-4 footnote">
+				To import downloaded schedule into Google Calendar, follow these steps:<br />
+				- Locate 'Other calendars' on the left sidebar of your Google Calendar, near the bottom. Press the plus sign and press 'Import'.
+				<img className="my-3" src="https://media.discordapp.net/attachments/808568263964753931/1076745103156195378/image.png?width=192&height=671" alt="Locating the import button" /><br/>
+				- In the new window, select the ICS file you downloaded. <br />
+				- Select the calendar you would like to import it into. <br />
+				- Press import!<br/>
+				<img className="my-3" src="https://media.discordapp.net/attachments/808568263964753931/1076745772298682428/image.png" alt="Importing the calendar." /><br/>
+				</p>
+				<p className="my-4 footnote">
+				Note: This app is still in very heavy development and contains many bugs. Apologies for any difficulty you may experience while trying to use the app. 
+				<br /><br />
+				To submit feedback (which is greatly appreciated!): <a href="https://forms.gle/iCZ6Fu5Lv9gBEXLk8" target="_blank" rel="noreferrer">https://forms.gle/iCZ6Fu5Lv9gBEXLk8</a>. 
+				Contact daji@ucsd.edu for any further questions / comments / concerns.<br /><br />
+				Regarding privacy, your uploaded schedule is stored in a server temporarily and then deleted immediately after it has been processed.</p>
 			</div>
 		)
 	}

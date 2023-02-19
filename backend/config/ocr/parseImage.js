@@ -22,10 +22,16 @@ async function getText(image) {
         const depts = parseAnnotation.getListOfDepartments();
 
         let textHeight;
+        let passedSubjectKeyword = false;
+
         for (let i = 1; i < detections.length; i++) {
             const detection = detections[i];
+            
+            if (detection.description === "Subject") {
+                passedSubjectKeyword = true;
+            }
 
-            if (depts.includes(detection.description)) {
+            if (depts.includes(detection.description) && (passedSubjectKeyword || i <= 3)) {
                 textHeight = detection.boundingPoly.vertices[2].y - detection.boundingPoly.vertices[0].y;
                 if (textHeight < 0.25 * dimensions.height) {
                     break;
@@ -33,8 +39,10 @@ async function getText(image) {
             }
         }
 
+        console.log(textHeight)
+
         detections.sort((a, b) => {
-            if (Math.abs(a.boundingPoly.vertices[0].y - b.boundingPoly.vertices[0].y) <= textHeight * 2.2) {
+            if (Math.abs(a.boundingPoly.vertices[0].y - b.boundingPoly.vertices[0].y) <= (textHeight ?? 10) * 1.5) {
                 return a.boundingPoly.vertices[0].x - b.boundingPoly.vertices[0].x;
             } else {
                 return a.boundingPoly.vertices[0].y - b.boundingPoly.vertices[0].y
@@ -86,6 +94,7 @@ async function getText(image) {
 }
 
 function cropText(text) {
+    console.log(text);
     try {
         const startSplits = [...text.matchAll(/ Status.+Position.+Action /gm)];
         const endSplitPatterns = [/ My Events /gm, / UC San Diego 9500 /gm, / \*/gm];
