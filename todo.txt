@@ -1,3 +1,26 @@
+need to do:
+- handling points of failure
+    - and accordingly giving out an error
+- data validation
+    - and accordingly fuzzy search
+- feedback form
+- connect gcal api
+- better ocr
+
+- drag and drop for images
+- split upload and process parts of request
+
+long term:
+- data editing 
+- users
+
+
+
+
+
+
+
+
 - Add error handling and error messages
 - Process image / pdf to create JSON object (Owen / Ethan)
 - JSON to ICS format (happens on frontend?) (Emmett)

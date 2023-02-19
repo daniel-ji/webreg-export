@@ -1,12 +1,14 @@
 const express = require('express');
 const router = express.Router();
 
-const passport = require('passport')
-
 const multer  = require('multer');
-const app = require('../app');
+
+const parseImage = require('../config/ocr/parseImage');
+const parseAnnotation = require('../config/ocr/parseAnnotation');
+
 const ACCEPTED_IMAGETYPE = ['image/png', 'image/jpeg']
 const ACCEPTED_PDFTYPE = ['application/pdf']
+
 const TEST_DATA = {
 	class0: {
 		day: "MWF",
@@ -115,7 +117,14 @@ router.post('/convertimage', upload.single('image'), (req, res, next) => {
 		return res.sendStatus(400);
 	}
 
-	return res.json(JSON.stringify(ICS_TEST_DATA))
+	try {
+		parseImage.getText(req.file.path).then(result => {
+			return res.json(JSON.stringify(parseAnnotation.getICS(result)))
+		})
+	} catch (error) {
+		console.log(error);
+		return res.sendStatus(500);
+	}
 })
 
 router.post('/convertpdf', upload.single('pdf'), (req, res, next) => {
@@ -124,24 +133,6 @@ router.post('/convertpdf', upload.single('pdf'), (req, res, next) => {
 	}
 
 	return res.json(JSON.stringify(ICS_TEST_DATA))
-})
-
-router.get('/auth/google', passport.authenticate('google', {
-	scope: ['email', 'profile']
-}))
-
-router.get('/auth/google/callback',
-    passport.authenticate( 'google', {
-        successRedirect: '/auth/google/success',
-        failureRedirect: '/auth/google/failure'
-}));
-
-router.get('/auth/google/success', (req, res, next) => {
-	return res.sendStatus(200);
-})
-
-router.get('/auth/google/failure', (req, res, next) => {
-	return res.sendStatus(200);
 })
 
 module.exports = router;

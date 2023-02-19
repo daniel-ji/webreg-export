@@ -9,14 +9,25 @@ const authFunctions = require('./config/authFunctions');
 const passport = require('passport')
 const GoogleStrategy = require('passport-google-oauth2').Strategy;
 
+const rateLimit = require('express-rate-limit')
 const cors = require('cors');
 const hpp = require('hpp');
 const helmet = require('helmet');
 require('dotenv').config()
 
 const indexRouter = require('./routes/index');
+const authRouter = require('./routes/auth');
 
 const app = express();
+
+// Rate Limiting
+const limiter = rateLimit({
+	windowMs: 15 * 60 * 1000, // 15 minutes
+	max: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
+	standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+	legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+})
+app.use(limiter)
 
 // Helmet
 app.use(helmet());
@@ -61,6 +72,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
+app.use('/auth', authRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
