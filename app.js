@@ -35,6 +35,11 @@ app.use(limiter)
 
 // Helmet
 app.use(helmet());
+app.use(helmet.contentSecurityPolicy({
+    directives: {
+        "object-src": 'self',
+    }
+}))
 // HPP
 app.use(hpp());
 
