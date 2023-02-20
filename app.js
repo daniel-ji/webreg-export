@@ -37,7 +37,7 @@ app.use(limiter)
 app.use(helmet());
 app.use(helmet.contentSecurityPolicy({
     directives: {
-        "img-src": ["'self'", "blob: data:"],
+        "img-src": ["'self'", "blob:https://webreg-export.herokuapp.com data:"],
     }
 }))
 // HPP
