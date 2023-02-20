@@ -9,6 +9,7 @@
   "dependencies": {
     "@google-cloud/vision": "^3.1.0",
     "cookie-parser": "~1.4.4",
+    "cookie-session": "^2.0.0",
     "cors": "^2.8.5",
     "debug": "~2.6.9",
     "dotenv": "^16.0.3",
