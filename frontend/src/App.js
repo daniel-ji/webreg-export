@@ -5,6 +5,10 @@ import { saveAs } from 'file-saver';
 
 import './App.scss';
 
+import locateImportImg from './assets/images/locate-import.png';
+import importButtonImg from './assets/images/import-button.png';
+import importCalImg from './assets/images/import-cal.png';
+
 export class App extends Component {
 	constructor(props) {
 	  	super(props)
@@ -226,13 +230,13 @@ export class App extends Component {
 					<h4 className="mb-4">Help Guide - Adding Downloaded (ICS) Schedule to Google Calendar</h4>
 					<p>To import your downloaded schedule (a .ics file) into Google Calendar, follow these steps:</p>
 					<li>Locate 'Other calendars' on the left sidebar of your Google Calendar, near the bottom. Press the plus sign.</li>
-					<img className="my-3" src="https://cdn.discordapp.com/attachments/808568263964753931/1077015895253188618/image.png" alt="Locating the import button" /><br/>
+					<img className="my-3" src={locateImportImg} alt="Locating the import button" /><br/>
 					<li className="my-4">Select 'Import'.</li>
-					<img className="my-3" src="https://cdn.discordapp.com/attachments/808568263964753931/1077015259543511070/image.png" alt="The import button" /><br/>
+					<img className="my-3" src={importButtonImg} alt="The import button" /><br/>
 					<li>In the new window, select the ICS file you downloaded. </li>
 					<li>Select the calendar you would like to import it into.</li>
 					<li>Press import!</li>
-					<img className="my-3" src="https://media.discordapp.net/attachments/808568263964753931/1076745772298682428/image.png" alt="Importing the calendar." /><br/>
+					<img className="my-3" src={importCalImg} alt="Importing the calendar." /><br/>
 				</div>
 			</div>
 		)
