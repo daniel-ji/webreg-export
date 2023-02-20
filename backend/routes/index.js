@@ -1,3 +1,5 @@
+const fs = require('fs');
+
 const express = require('express');
 const router = express.Router();
 
@@ -5,68 +7,10 @@ const multer  = require('multer');
 
 const parseImage = require('../config/ocr/parseImage');
 const parseAnnotation = require('../config/ocr/parseAnnotation');
+const constants = require('../config/ocr/constants');
 
 const ACCEPTED_IMAGETYPE = ['image/png', 'image/jpeg']
 const ACCEPTED_PDFTYPE = ['application/pdf']
-
-const TEST_DATA = {
-	class0: {
-		day: "MWF",
-		timeStart: [10, 0],
-		timeFinish: [10, 50],
-		className: "CSE 15L",
-		classTitle: "Software Tools & Techniques Lab",
-		classType: "LE",
-		sectionNumber: "BO7",
-		professor: "Politz, Joseph Gibbs",
-		location: "PETER 108",
-		gradeOption: "L",
-		units: 2
-	},
-	class1: {
-		day: "tuesday",
-		timeStart: [8, 0],
-		timeFinish: [9, 20],
-		className: "CSE 20",
-		classTitle: "Discrete Mathematics",
-		classType: "LE",
-		sectionNumber: "A01",
-		professor: "Jones, Miles E",
-		location: "WLH 2001",
-		gradeOption: "L",
-		units: 4
-	}
-};
-const ICS_TEST_DATA = [
-	{
-		start: [2023, 1, 9, 10, 0],
-		duration: {hours: 0, minutes: 50},
-		title: 'CSE 15L',
-		description: 
-`CSE 15L, Software Tools&Techniques Lab
-Politz, Joseph Gibbs
-PETER 108
-Class Type: LE
-Section B07
-Grade Option: L, Units: 2`,
-		location: 'PETER 108',
-		recurrenceRule: 'FREQ=WEEKLY;BYDAY=MO,WE;INTERVAL=1'
-	},
-	{
-		start: [2023, 1, 10, 8, 0],
-		duration: {hours: 1, minutes: 20},
-		title: 'CSE 20',
-		description: 
-`CSE 20, Discrete Mathematics
-Jones, Miles E
-WLH 2001
-Class Type: LE
-Section A01
-Grade Option: L, Units: 4`,
-		location: 'WLH 2001',
-		recurrenceRule: 'FREQ=WEEKLY;BYDAY=TU,TH;INTERVAL=1'
-	}
-]
 
 const storage = multer.diskStorage({
 	destination: './tmp/uploads',
@@ -113,13 +57,23 @@ router.get('/logout', (req, res, next) => {
 })
 
 router.post('/convertimage', upload.single('image'), (req, res, next) => {
-	if (!req.file) {
+	if (req.file) {
+		setTimeout(() => {
+			fs.unlink(req.file.path, (err) => {
+				if (err) {
+					console.log(err);
+				}
+			});
+		}, 10000)
+	}
+
+	if (!req.file || !Object.keys(constants.academicQuarters).includes(req.body.quarter)) {
 		return res.sendStatus(400);
 	}
 
 	try {
 		parseImage.getText(req.file.path).then(result => {
-			return res.json(JSON.stringify(parseAnnotation.getICS(result)))
+			return res.json(JSON.stringify(parseAnnotation.getICS(result, req.body.quarter)))
 		})
 	} catch (error) {
 		console.log(error);

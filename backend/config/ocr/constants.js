@@ -872,8 +872,18 @@ const acceptedWeekdays =
 "Sa",
 "Su"];
 
-const spring2023Start = new Date('1/9/2023');
-const spring2023End = new Date('3/18/2023');
+const timeRegexMatch = /[0-9]{1,2}:[0-9]{2}[ap]-[0-9]{1,2}:[0-9]{2}[ap]/gm;
+
+const academicQuarters = {
+    spring2023: {
+        start:  new Date('4/3/2023'),
+        end: new Date('6/10/2023')
+    },
+    winter2023: {
+        start:  new Date('1/9/2023'),
+        end: new Date('3/18/2023')
+    }
+}
 
 const weekdays = {'M': 0, 'Tu': 1, 'W': 2, 'Th': 3, 'F': 4, 'Sa': 5, 'Su': 6};
 const splitCourseToEventsAfter = ["Enrolled Drop Change", "Planned Remove Enroll"]
@@ -887,4 +897,4 @@ const testText1 = "CSE 15L Software Tools & Techniques Lab ВОО LE Politz,Jose
 const testText2 = "AWP 4A Analytical Writing A 020 SE Wilson,Natalie Ann P/NP 4.00 TuTh 11:00a-12:20p CENTR 208 Enrolled Drop Change CSE 12 Basic Data Struct & OO Design A00 LE Cao,Yingjun L 4.00 MWF 8:00a-8:50a WLH 2001 Enrolled Drop Change A01 DI M 3:00p-3:50p WLH 2001 Final Exam IYSIYō FI Sa 03/18/2023 8:00a-10:59a TBA TBA CSE 15L Software Tools & Techniques Lab A00 LE Politz,Joseph Gibbs L 2.00 MW 9:00a-9:50a PETER 108 Enrolled Drop Change A07 LA Th 2:00p-3:50p EBU3B B260 Final Exam FI Sa 03/18/2023 3:00p-5:59p TBA TBA CSE 20 Discrete Mathematics A00 LE Jones,Miles E L 4.00 TuTh 8:00a-9:20a WLH 2001 Enrolled Drop Change A01 DI F 12:00p-12:50p WLH 2001 Final Exam FI Th 03/23/2023 8:00a-10:59a TBA TBA Taylor,Alexander MUS 95E Chamber Orchestra BOO ST L Lawther 2.00 Tu 6:30p-9:20p CPMC 136 Enrolled Drop Change";
 // TODO: add other constants for validation
 
-module.exports = {deptString, acceptedWeekdays, splitCourseToEventsAfter, splitCourseToEventsBefore, testText1, testText2, gradingOptions, commonErrors, weekdays, spring2023Start, spring2023End, omittedStrings};
+module.exports = {deptString, acceptedWeekdays, splitCourseToEventsAfter, splitCourseToEventsBefore, testText1, testText2, gradingOptions, commonErrors, weekdays, academicQuarters, omittedStrings, timeRegexMatch};

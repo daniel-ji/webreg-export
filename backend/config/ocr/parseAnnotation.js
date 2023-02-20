@@ -1,6 +1,6 @@
 const constants = require('./constants');
 
-function getICS(text, json = false) {
+function getICS(text, academicQuarter, json = false) {
     const jsonText = json ? text : getJSON(text);
     const ICSData = [];
 
@@ -8,6 +8,19 @@ function getICS(text, json = false) {
 
     for (const courseEvent of jsonText) {
         // TODO: ensure courseEvent is valid and auto-correct as necessary
+        if (courseEvent.days === undefined || !constants.acceptedWeekdays.includes(courseEvent.days)) {
+            continue;
+        } 
+
+        if (courseEvent.time === undefined || 
+            courseEvent.time.match(constants.timeRegexMatch) === null || 
+            courseEvent.time.match(constants.timeRegexMatch)[0] !== courseEvent.time) { 
+            continue;
+        }
+        
+        const start = (courseEvent.courseType === 'FI' || courseEvent.courseType === 'MI') ? 
+            getExamDay(courseEvent) : 
+            getStartDay(new Date(constants.academicQuarters[academicQuarter].start), courseEvent);
 
         ICSData.push({
             title: courseEvent.courseCode,
@@ -18,12 +31,11 @@ Location: ${courseEvent.building} ${courseEvent.room}
 Class Type: ${courseEvent.courseType}
 Section ${courseEvent.section}
 Grade Option: ${courseEvent.gradeOption}, Units: ${courseEvent.units}`,
-            start: (courseEvent.courseType === 'FI' || courseEvent.courseType === 'MI') ? 
-                getExamDay(courseEvent) : 
-                getStartDay(new Date(constants.spring2023Start), courseEvent),
+            start: start,
+            startOutputType: 'local',
             duration: getDuration(courseEvent),
             location: courseEvent.building === undefined ? undefined : `${courseEvent.building} ${courseEvent.room}`,
-            recurrenceRule: getRecurrence(courseEvent, constants.spring2023End) 
+            recurrenceRule: getRecurrence(courseEvent, constants.academicQuarters[academicQuarter].end) 
         })
     }
 
@@ -34,16 +46,18 @@ function getStartDay(date, courseEvent) {
     const weekdays = courseEvent.days; 
     let day = weekdays[0] === 'T' || weekdays[0] === 'S' ? (weekdays[0] + weekdays[1]): weekdays[0];
     const startDay = new Date(date.setDate(date.getDate() + (constants.weekdays[day] + 1 + 7 - date.getDay()) % 7));
-    const startTime = courseEvent.time.split("-")[0].split(":");
-    const add12 = startTime[1].includes('p') && parseInt(startTime[0]) !== 12;
-    return [startDay.getFullYear(), startDay.getMonth() + 1, startDay.getDate(), parseInt(startTime[0]) + (add12 ? 12 : 0), parseInt(startTime[1])];
+    return getDay(startDay, courseEvent);
 }
 
 function getExamDay(courseEvent) {
-    const examDay = new Date(courseEvent.date);
+    return getDay(courseEvent.date, courseEvent);
+}
+
+function getDay(date, courseEvent) {
     const startTime = courseEvent.time.split("-")[0].split(":");
+    const day = new Date(date);
     const add12 = startTime[1].includes('p') && parseInt(startTime[0]) !== 12;
-    return [examDay.getFullYear(), examDay.getMonth() + 1, examDay.getDate(), parseInt(startTime[0]) + (add12 ? 12 : 0), parseInt(startTime[1])];
+    return [day.getFullYear(), day.getMonth() + 1, day.getDate(), parseInt(startTime[0]) + (add12 ? 12 : 0), parseInt(startTime[1])];
 }
 
 function getDuration(courseEvent) {

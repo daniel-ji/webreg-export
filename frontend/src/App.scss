@@ -35,8 +35,16 @@ html, body {
     height: 90vh;
 }
 
+.content {
+    width: 80vw;
+
+    img {
+        max-width: 100%;
+    }
+}
+
 .footnote {
-    width: 50vw;
+    width: 80vw;
 }
 
 .no-select {

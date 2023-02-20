@@ -1,14 +1,16 @@
 need to do:
+
+double upload photo bug
+ui update on drag and drop
+
+deleting tmp files 
+- set a timeout for 60s and delete everything that's over a minute old  
+
 - handling points of failure
     - and accordingly giving out an error
 - data validation
     - and accordingly fuzzy search
-- feedback form
 - connect gcal api
-- better ocr
-
-- drag and drop for images
-- split upload and process parts of request
 
 long term:
 - data editing 
