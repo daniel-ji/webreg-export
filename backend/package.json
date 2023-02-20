@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon ./bin/www"
+    "start": "nodemon ./bin/www",
+    "heroku-postbuild": "cd frontend && npm install && npm run build"
   },
   "dependencies": {
     "@google-cloud/vision": "^3.1.0",
