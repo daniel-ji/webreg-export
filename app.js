@@ -37,7 +37,7 @@ app.use(limiter)
 app.use(helmet());
 app.use(helmet.contentSecurityPolicy({
     directives: {
-        "object-src": 'self',
+        "img-src": ["'self'", "https: data:"],
     }
 }))
 // HPP
