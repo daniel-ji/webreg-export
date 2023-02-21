@@ -184,8 +184,8 @@ export class App extends Component {
 	render() {
 		return (
 			<div className="App">
-				<h1 className="my-4 text-center">UCSD WebReg Export App</h1>
-				<div className="my-3 d-flex flex-column align-items-center">
+				<h1 className="mt-5 text-center">UCSD WebReg Export App</h1>
+				<div className="my-2 d-flex flex-column align-items-center">
 					<label htmlFor="setSchedule" className="form-label my-3">Upload your schedule here (PNG / JPG), see example&nbsp;
 						<a href="https://cdn.discordapp.com/attachments/808568263964753931/1076746824217526322/image.png" target="_blank" rel="noreferrer">here</a>:
 					</label>
