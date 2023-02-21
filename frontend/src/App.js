@@ -31,6 +31,8 @@ export class App extends Component {
 			scheduleError: false,
 			// schedule's academic quarter
 			scheduleQuarter: "N/a",
+			// whether or not to resend schedule to backend
+			scheduleChanged: true,
 		}
 	}
 
@@ -68,7 +70,7 @@ export class App extends Component {
 	}
 
 	setScheduleQuarter = (e) => {
-		this.setState({scheduleQuarter: e.target.value})
+		this.setState({scheduleQuarter: e.target.value, scheduleQuarterChanged: true})
 	}
 
 	setStatus = (status, error) => {
@@ -82,14 +84,14 @@ export class App extends Component {
 			scheduleFile.append("image", file, "schedule.png");
 			const schedulePreview = URL.createObjectURL(file);
 	
-			this.setState({scheduleFile, schedulePreview, scheduleType, scheduleData: undefined, scheduleICS: undefined});
+			this.setState({scheduleFile, schedulePreview, scheduleType, scheduleData: undefined, scheduleICS: undefined, scheduleChanged: true});
 			this.setStatus('')
 		} else if (scheduleType === 'image/jpeg') {
 			scheduleFile.append("image", file, "schedule.jpg");
 			const schedulePreview = URL.createObjectURL(file);
 	
 			this.setStatus('')
-			this.setState({scheduleFile, schedulePreview, scheduleType, scheduleData: undefined, scheduleICS: undefined});
+			this.setState({scheduleFile, schedulePreview, scheduleType, scheduleData: undefined, scheduleICS: undefined, scheduleChanged: true});
 		}
 		// } else if (scheduleType === 'application/pdf') {
 		// 	scheduleFile.append("pdf", e.target.files[0], "schedule.pdf")
@@ -110,7 +112,7 @@ export class App extends Component {
 			const scheduleFile = this.state.scheduleFile;
 			scheduleFile.append("quarter", this.state.scheduleQuarter);
 
-			this.setState({sendScheduleDelay: true, scheduleFile}, () => {
+			this.setState({sendScheduleDelay: true, scheduleFile, scheduleChanged: false}, () => {
 				let finished = false;
 				this.setStatus("Processing...")
 				setTimeout(() => {
@@ -129,7 +131,7 @@ export class App extends Component {
 					}
 
 					finished = true;
-					
+
 					this.setStatus("Done!")
 					this.setState({scheduleData: JSON.parse(res.data), scheduleICS: value}, callback)
 				}).catch(err => {
@@ -166,7 +168,7 @@ export class App extends Component {
 			return;
 		}
 
-		if (!this.state.scheduleICS) {
+		if (this.state.scheduleChanged) {
 			this.sendSchedule(() => firstRun && this.downloadSchedule(false));
 			return;
 		}
@@ -179,7 +181,7 @@ export class App extends Component {
 	// 		return;
 	// 	}
 
-	// 	if (!this.state.scheduleICS) {
+	// 	if (this.state.scheduleChanged) {
 	// 		this.sendSchedule(this.exportSchedule);
 	// 		return;
 	// 	}

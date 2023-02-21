@@ -32,7 +32,6 @@ Class Type: ${courseEvent.courseType}
 Section ${courseEvent.section}
 Grade Option: ${courseEvent.gradeOption}, Units: ${courseEvent.units}`,
             start: start,
-            startOutputType: 'local',
             duration: getDuration(courseEvent),
             location: courseEvent.building === undefined ? undefined : `${courseEvent.building} ${courseEvent.room}`,
             recurrenceRule: getRecurrence(courseEvent, constants.academicQuarters[academicQuarter]) 
