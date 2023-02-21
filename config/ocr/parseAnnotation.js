@@ -35,7 +35,7 @@ Grade Option: ${courseEvent.gradeOption}, Units: ${courseEvent.units}`,
             startOutputType: 'local',
             duration: getDuration(courseEvent),
             location: courseEvent.building === undefined ? undefined : `${courseEvent.building} ${courseEvent.room}`,
-            recurrenceRule: getRecurrence(courseEvent, constants.academicQuarters[academicQuarter].end) 
+            recurrenceRule: getRecurrence(courseEvent, constants.academicQuarters[academicQuarter]) 
         })
     }
 
@@ -73,7 +73,7 @@ function getDuration(courseEvent) {
     return {hours: Math.floor((endTime - startTime) / 60), minutes: (endTime - startTime) % 60}
 }
 
-function getRecurrence(courseEvent, endDate) {
+function getRecurrence(courseEvent, academicQuarter) {
     if (courseEvent.courseType === 'FI' || courseEvent.courseType === 'MI') {
         return 'FREQ=WEEKLY;INTERVAL=1;COUNT=1';
     }
@@ -101,7 +101,12 @@ function getRecurrence(courseEvent, endDate) {
         dayFreq += "SU,"
     }
     dayFreq = dayFreq.substring(0, dayFreq.length - 1);
-    return `FREQ=WEEKLY;BYDAY=${dayFreq};INTERVAL=1;UNTIL=${endDate.toISOString().replaceAll('-','').replaceAll(':','').replaceAll('.','')}`
+
+    const endDate = academicQuarter.end;
+    const exDate = academicQuarter.excludedDates.map(date => '\nEXDATE:' + date).join('');
+    console.log(exDate);
+
+    return `FREQ=WEEKLY;BYDAY=${dayFreq};INTERVAL=1;UNTIL=${endDate.toISOString().replaceAll('-','').replaceAll(':','').replaceAll('.','')}${exDate}`
 }
 
 // TODO: only assign values if they're valid (literally all courseEvent fields)

@@ -877,11 +877,13 @@ const timeRegexMatch = /[0-9]{1,2}:[0-9]{2}[ap]-[0-9]{1,2}:[0-9]{2}[ap]/gm;
 const academicQuarters = {
     spring2023: {
         start:  new Date(new Date('4/3/2023').toLocaleDateString('en-US', {timeZone: 'America/Los_Angeles'})),
-        end: new Date(new Date('6/10/2023').toLocaleDateString('en-US', {timeZone: 'America/Los_Angeles'}))
+        end: new Date(new Date('6/10/2023').toLocaleDateString('en-US', {timeZone: 'America/Los_Angeles'})),
+        excludedDates: ['20230529'] 
     },
     winter2023: {
         start:  new Date(new Date('1/9/2023').toLocaleDateString('en-US', {timeZone: 'America/Los_Angeles'})),
-        end: new Date(new Date('3/18/2023').toLocaleDateString('en-US', {timeZone: 'America/Los_Angeles'}))
+        end: new Date(new Date('3/18/2023').toLocaleDateString('en-US', {timeZone: 'America/Los_Angeles'})),
+        excludedDates: ['20230116', '20230220']
     }
 }
 

@@ -50,7 +50,7 @@ async function getText(image) {
         let text = "";
         let lastTopY = 0;
 
-        const noSpaceDelimiters = [",", ":", "-", "/", "."];
+        const noSpaceDelimiters = [",", ":", "-", "/", ".", "4.", "2.", "6.", "1."];
         for (let index = 0; index < detections.length; index++) {
             const detection = detections[index];
             if (constants.omittedStrings.includes(detection.description)) {
