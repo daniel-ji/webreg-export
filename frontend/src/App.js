@@ -58,8 +58,13 @@ export class App extends Component {
 		dragDropSchedule.ondrop = (e) => {
 			dragDropSchedule.classList.remove("dragged-over");
 			this.setSchedule(e.dataTransfer.files[0])
+			document.getElementById('set-schedule').files = e.dataTransfer.files;
 		}
 
+		window.addEventListener('paste', e => {
+			this.setSchedule(e.clipboardData.files[0])
+			document.getElementById('set-schedule').files = e.clipboardData.files;
+		})
 	}
 
 	setScheduleQuarter = (e) => {
@@ -124,6 +129,9 @@ export class App extends Component {
 					}
 
 					finished = true;
+
+					document.getElementById('preface').scrollIntoView();
+
 					this.setStatus("Done!")
 					this.setState({scheduleData: JSON.parse(res.data), scheduleICS: value}, callback)
 				}).catch(err => {
@@ -186,12 +194,12 @@ export class App extends Component {
 			<div className="App">
 				<h1 className="mt-5 text-center">UCSD WebReg Export App</h1>
 				<div className="my-2 d-flex flex-column align-items-center">
-					<label htmlFor="setSchedule" className="form-label my-3">Upload your schedule here (PNG / JPG), see example&nbsp;
+					<label htmlFor="set-schedule" className="form-label my-3">Upload your schedule here (PNG / JPG), see example&nbsp;
 						<a href="https://cdn.discordapp.com/attachments/808568263964753931/1076746824217526322/image.png" target="_blank" rel="noreferrer">here</a>:
 					</label>
-					<input className="form-control my-2" type="file" id="setSchedule" accept="image/png, image/jpeg, image/jpg" onChange={(e) => this.setSchedule(e.target.files[0])} onClick={(e) => e.target.value = null}/>
-					<div className="my-4 no-select" id="drag-drop-schedule">
-						Drag and Drop Schedule Here
+					<input className="form-control my-2" type="file" id="set-schedule" accept="image/png, image/jpeg, image/jpg" onChange={(e) => this.setSchedule(e.target.files[0])} onClick={(e) => e.target.value = null}/>
+					<div className="mb-5 mt-2 no-select" id="drag-drop-schedule">
+						Drag and Drop / Paste Schedule Here
 					</div>
 					<select className="form-select" aria-label="Academic Quarter" onChange={this.setScheduleQuarter} value={this.state.scheduleQuarter}>
 						<option value="N/a">Select Schedule's Academic Quarter</option>
@@ -212,9 +220,9 @@ export class App extends Component {
 				}
 				</Fragment>
 				}
-				<div className="my-4 footnote">
+				<div className="my-4 footnote" id="preface">
 					<h4 className="mb-4">Preface</h4>
-					<p>Thank you for visiting the site!</p>
+					<p>Thank you for visiting the site! <b>This site takes a screenshot of your schedule and converts it into an .ics file that can be imported into your calendar (Google Calendar, Apple Calendar, Microsoft Outlook, etc.)</b></p>
 					<p>This app is not affiliated with UCSD. It is still in very heavy development and contains many bugs. Apologies for any difficulty you may experience while trying to use the app.</p>
 					<p>To submit feedback, which is greatly appreciated: <a href="https://forms.gle/iCZ6Fu5Lv9gBEXLk8" target="_blank" rel="noreferrer">https://forms.gle/iCZ6Fu5Lv9gBEXLk8</a>.</p> 
 					<p>Contact daji@ucsd.edu for any further questions / comments / concerns.</p>
@@ -223,11 +231,11 @@ export class App extends Component {
 				<div className="my-4 content">
 					<h4 className="mb-4">Troubleshooting Guide</h4>
 					<p>Sometimes the exported schedule has errors or does not work. With this app still being fine-tuned, this is likely to happen and we're sorry about that.</p>
-					<p>To ensure for the highest chance of a properly processed schedule, please check out the example here and crop the screenshot to something similar, where it's just the schedule. A desktop screenshot will work best.</p>
+					<p>To ensure for the highest chance of a properly processed schedule, please check out the example <a href="https://cdn.discordapp.com/attachments/808568263964753931/1076746824217526322/image.png" target="_blank" rel="noreferrer">here</a> and crop the screenshot to something similar, where it's just the schedule. A desktop screenshot will work best.</p>
 					<p>Classes with a TBA 'Days' or TBA 'Time' section will not have events created.</p>
 				</div>
-				<div className="my-4 content">
-					<h4 className="mb-4">Help Guide - Adding Downloaded (ICS) Schedule to Google Calendar</h4>
+				<div className="my-4 content" id="next-steps">
+					<h4 className="mb-4">Next Steps - Adding Downloaded (ICS) Schedule to Google Calendar</h4>
 					<p>To import your downloaded schedule (a .ics file) into Google Calendar, follow these steps:</p>
 					<li>Locate 'Other calendars' on the left sidebar of your Google Calendar, near the bottom. Press the plus sign.</li>
 					<img className="my-3" src={locateImportImg} alt="Locating the import button" /><br/>
