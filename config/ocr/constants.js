@@ -876,18 +876,18 @@ const timeRegexMatch = /[0-9]{1,2}:[0-9]{2}[ap]-[0-9]{1,2}:[0-9]{2}[ap]/gm;
 
 const academicQuarters = {
     spring2023: {
-        start:  new Date('4/3/2023'),
-        end: new Date('6/10/2023')
+        start:  new Date(new Date('4/3/2023').toLocaleDateString('en-US', {timeZone: 'America/Los_Angeles'})),
+        end: new Date(new Date('6/10/2023').toLocaleDateString('en-US', {timeZone: 'America/Los_Angeles'}))
     },
     winter2023: {
-        start:  new Date('1/9/2023'),
-        end: new Date('3/18/2023')
+        start:  new Date(new Date('1/9/2023').toLocaleDateString('en-US', {timeZone: 'America/Los_Angeles'})),
+        end: new Date(new Date('3/18/2023').toLocaleDateString('en-US', {timeZone: 'America/Los_Angeles'}))
     }
 }
 
 const weekdays = {'M': 0, 'Tu': 1, 'W': 2, 'Th': 3, 'F': 4, 'Sa': 5, 'Su': 6};
 const splitCourseToEventsAfter = ["Enrolled Drop Change", "Planned Remove Enroll"]
-const splitCourseToEventsBefore = [" Midterm ", " Final Exam ", / [A-Z][0-9]{2} /gm, / [0-9]{3} IN /gm]
+const splitCourseToEventsBefore = [" Midterm ", " Final Exam ", / [A-Z0-9][0-9]{2} /gm, / [0-9]{3} IN /gm]
 
 const gradingOptions = ["L", "P/NP"];
 const commonErrors = [[" ВОО ", " B00 "], [" DOO ", " D00 "], [" BOO ", " B00 "]];

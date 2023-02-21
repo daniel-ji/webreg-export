@@ -83,6 +83,9 @@ async function getText(image) {
             text += (addSpace ? "" : " ") + detection.description;
             lastTopY = detection.boundingPoly.vertices[0].y;
         }
+
+        console.log(text);
+        console.log(cropText(text));
         return cropText(text);
     } catch (err) {
         console.log(err);

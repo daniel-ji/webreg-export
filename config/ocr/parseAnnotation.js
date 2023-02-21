@@ -122,6 +122,8 @@ function getJSON(text) {
         let gradeOption = "";
         let units = "";
 
+        console.log(splitCourse);
+
         for (let i = 1; i < splitCourse.length; i++) {
             const splitCourseArray = splitCourse[i].split(" ");
             const courseEvent = {};
