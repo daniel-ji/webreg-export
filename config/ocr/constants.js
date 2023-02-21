@@ -887,7 +887,7 @@ const academicQuarters = {
 
 const weekdays = {'M': 0, 'Tu': 1, 'W': 2, 'Th': 3, 'F': 4, 'Sa': 5, 'Su': 6};
 const splitCourseToEventsAfter = ["Enrolled Drop Change", "Planned Remove Enroll"]
-const splitCourseToEventsBefore = [" Midterm ", " Final Exam ", / [A-Z0-9][0-9]{2} /gm, / [0-9]{3} IN /gm]
+const splitCourseToEventsBefore = [" Midterm ", " Final Exam ", / [A-Z0-9][0-9]{2} [A-Z]{2} /gm, / [0-9]{3} IN /gm]
 
 const gradingOptions = ["L", "P/NP"];
 const commonErrors = [[" ВОО ", " B00 "], [" DOO ", " D00 "], [" BOO ", " B00 "]];
