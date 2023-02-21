@@ -130,7 +130,7 @@ export class App extends Component {
 
 					finished = true;
 
-					document.getElementById('preface').scrollIntoView();
+					document.getElementById('preface').scrollIntoView({behavior: 'smooth'});
 
 					this.setStatus("Done!")
 					this.setState({scheduleData: JSON.parse(res.data), scheduleICS: value}, callback)

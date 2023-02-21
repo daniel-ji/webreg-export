@@ -23,7 +23,7 @@ function getICS(text, academicQuarter, json = false) {
             getStartDay(new Date(constants.academicQuarters[academicQuarter].start), courseEvent);
 
         ICSData.push({
-            title: courseEvent.courseCode,
+            title: courseEvent.courseCode + " " + courseEvent.courseType,
             description: 
 `${courseEvent.courseCode}, ${courseEvent.courseName}
 Professor: ${courseEvent.professor}
@@ -102,8 +102,9 @@ function getRecurrence(courseEvent, academicQuarter) {
     }
     dayFreq = dayFreq.substring(0, dayFreq.length - 1);
 
+    const startTime = courseEvent.time.split("-")[0].split(":");
     const endDate = academicQuarter.end;
-    const exDate = academicQuarter.excludedDates.map(date => '\nEXDATE:' + date).join('');
+    const exDate = academicQuarter.excludedDates.map(date => '\nEXDATE:' + date + 'T' + ("0" + startTime[0]).slice(-2) + startTime[1] + '00').join('');
     console.log(exDate);
 
     return `FREQ=WEEKLY;BYDAY=${dayFreq};INTERVAL=1;UNTIL=${endDate.toISOString().replaceAll('-','').replaceAll(':','').replaceAll('.','')}${exDate}`
