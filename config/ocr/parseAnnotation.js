@@ -104,7 +104,7 @@ function getRecurrence(courseEvent, academicQuarter) {
 
     const startTime = courseEvent.time.split("-")[0].split(":");
     const endDate = academicQuarter.end;
-    const exDate = academicQuarter.excludedDates.map(date => '\nEXDATE:' + date + 'T' + ("0" + startTime[0]).slice(-2) + startTime[1] + '00').join('');
+    const exDate = academicQuarter.excludedDates.map(date => '\nEXDATE:' + date + 'T' + ("0" + startTime[0]).slice(-2) + startTime[1].slice(0, -1) + '00').join('');
     console.log(exDate);
 
     return `FREQ=WEEKLY;BYDAY=${dayFreq};INTERVAL=1;UNTIL=${endDate.toISOString().replaceAll('-','').replaceAll(':','').replaceAll('.','')}${exDate}`
