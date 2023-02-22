@@ -30,7 +30,7 @@ async function getText(image) {
         // sort text (approximation) before getting text height to help with getting the baseline text height
         // sorts top to bottom, left to right
         detections.sort((a, b) => {
-            if (Math.abs(a.boundingPoly.vertices[0].y - b.boundingPoly.vertices[0].y) <= textHeight * 1.5) {
+            if (Math.abs(a.boundingPoly.vertices[0].y - b.boundingPoly.vertices[0].y) <= 10 * 1.5) {
                 return a.boundingPoly.vertices[0].x - b.boundingPoly.vertices[0].x;
             } else {
                 return a.boundingPoly.vertices[0].y - b.boundingPoly.vertices[0].y

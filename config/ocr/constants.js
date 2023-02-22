@@ -57,7 +57,7 @@ const academicQuarters = {
 }
 
 // conversion from weekday string to number
-const weekdays = {'Mo': 0, 'Tu': 1, 'We': 2, 'Th': 3, 'Fr': 4, 'Sa': 5, 'Su': 6};
+const weekdays = {'M': 0, 'Tu': 1, 'W': 2, 'Th': 3, 'F': 4, 'Sa': 5, 'Su': 6};
 
 // list of string to split schedule into respective separate courses, keywords at the end of courses
 const splitCourseToEventsAfter = ["Enrolled Drop Change", "Planned Remove Enroll"]

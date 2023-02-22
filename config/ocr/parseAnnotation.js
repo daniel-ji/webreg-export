@@ -69,10 +69,13 @@ Grade Option: ${courseEvent.gradeOption}, Units: ${courseEvent.units}`,
  */
 function getStartDay(date, courseEvent) {
     const weekdays = courseEvent.days;
-    // get day of week of first day of class
-    let day = (weekdays[0] + weekdays[1]);
+    // get day of week of first day of class, if it's tu / th / sat / sun, get first two letters, else get first letter
+    let day = weekdays[0] === 'T' || weekdays[0] === 'S' ? weekdays[0] + weekdays[1] : weekdays[0];
+    console.log(day)
+    console.log(constants.weekdays[day])
     // convert day of week to number and get first date that is either on or before provided date variable 
     const startDay = new Date(date.setDate(date.getDate() + (constants.weekdays[day] + 1 + 7 - date.getDay()) % 7));
+    console.log(startDay)
     // return ics array format of start day 
     return getDay(startDay, courseEvent);
 }
