@@ -27,7 +27,7 @@ function getICS(text, academicQuarter, json = false) {
             description: 
 `${courseEvent.courseCode}, ${courseEvent.courseName}
 Professor: ${courseEvent.professor}
-Location: ${courseEvent.building} ${courseEvent.room}
+Location: <a href=https://map.concept3d.com/?id=1005#!s/${courseEvent.building}_Main?ct/18312>${courseEvent.building} ${courseEvent.room}</a>
 Class Type: ${courseEvent.courseType}
 Section ${courseEvent.section}
 Grade Option: ${courseEvent.gradeOption}, Units: ${courseEvent.units}`,

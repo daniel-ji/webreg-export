@@ -1,3 +1,4 @@
+// TODO: make scrapable, https://blink.ucsd.edu/instructors/courses/schedule-of-classes/subject-codes.html
 const deptString = `<tbody>
 <tr>
 <th>Code</th>
@@ -837,6 +838,7 @@ const deptString = `<tbody>
 </tr>
 </tbody>`;
 
+// TODO: make into something not as ugly, probably a regex match
 const acceptedWeekdays = 
 ["F", 
 "Th", 
