@@ -22,12 +22,16 @@ function getICS(text, academicQuarter, json = false) {
             getExamDay(courseEvent) : 
             getStartDay(new Date(constants.academicQuarters[academicQuarter].start), courseEvent);
 
+        const locationLink = courseEvent.building !== undefined && courseEvent.building !== 'TBA' ?
+            '<a href=https://map.concept3d.com/?id=1005#!s/${courseEvent.building}_Main?ct/18312>${courseEvent.building} ${courseEvent.room}</a>' :
+            `${courseEvent.building} ${courseEvent.room}`;
+
         ICSData.push({
             title: courseEvent.courseCode + " " + courseEvent.courseType,
             description: 
 `${courseEvent.courseCode}, ${courseEvent.courseName}
 Professor: ${courseEvent.professor}
-Location: <a href=https://map.concept3d.com/?id=1005#!s/${courseEvent.building}_Main?ct/18312>${courseEvent.building} ${courseEvent.room}</a>
+Location: ${locationLink}
 Class Type: ${courseEvent.courseType}
 Section ${courseEvent.section}
 Grade Option: ${courseEvent.gradeOption}, Units: ${courseEvent.units}`,
