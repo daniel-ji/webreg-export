@@ -9,9 +9,11 @@ const parseImage = require('../config/ocr/parseImage');
 const parseAnnotation = require('../config/ocr/parseAnnotation');
 const constants = require('../config/ocr/constants');
 
+// accepted image and pdf types, pdf not yet implemented (also may not be removed in the future)
 const ACCEPTED_IMAGETYPE = ['image/png', 'image/jpeg']
 const ACCEPTED_PDFTYPE = ['application/pdf']
 
+// multer storage for uploaded schedule photos
 const storage = multer.diskStorage({
 	destination: './tmp/uploads',
 	filename: (req, file, cb) => {
@@ -24,6 +26,7 @@ const storage = multer.diskStorage({
 	}
 })
 
+// multer upload object with limit config and file filter to prevent unwanted uploads
 const upload = multer({ 
 	storage: storage,
 	limits: {
@@ -49,6 +52,7 @@ router.get('/', (req, res, next) => {
 	return res.sendStatus(200);
 });
 
+// log out user, for passport / google oauth, partially implemented
 router.get('/logout', (req, res, next) => {
 	req.logOut((err) => {
 		if (err) return res.sendStatus(500);
@@ -56,7 +60,9 @@ router.get('/logout', (req, res, next) => {
 	});
 })
 
+// convert image to ICS, returns 400 if no image or quarter is provided, 500 if error occurs
 router.post('/convertimage', upload.single('image'), (req, res, next) => {
+	// delete file after 10 seconds
 	if (req.file) {
 		setTimeout(() => {
 			fs.unlink(req.file.path, (err) => {
@@ -67,12 +73,15 @@ router.post('/convertimage', upload.single('image'), (req, res, next) => {
 		}, 10000)
 	}
 
+	// if no file or invalid quarter, invalid request, return 400
 	if (!req.file || !Object.keys(constants.academicQuarters).includes(req.body.quarter)) {
 		return res.sendStatus(400);
 	}
 
+	// try to parse image, if error occurs, return 500
 	try {
 		parseImage.getText(req.file.path).then(result => {
+			// return 200 with ICS data as a stringify'd JSON object
 			return res.json(JSON.stringify(parseAnnotation.getICS(result, req.body.quarter)))
 		})
 	} catch (error) {
@@ -81,12 +90,13 @@ router.post('/convertimage', upload.single('image'), (req, res, next) => {
 	}
 })
 
+// convert pdf to ICS, not yet implemented
 router.post('/convertpdf', upload.single('pdf'), (req, res, next) => {
 	if (!req.file) {
 		return res.sendStatus(400);
 	}
 
-	return res.json(JSON.stringify(ICS_TEST_DATA))
+	return res.sendStatus(501);
 })
 
 module.exports = router;

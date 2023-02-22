@@ -37,6 +37,7 @@ export class App extends Component {
 	}
 
 	componentDidMount() {
+		// drag and drop schedule feature 
 		const dragDropSchedule = document.getElementById('drag-drop-schedule');
 		['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
 			dragDropSchedule.addEventListener(eventName, (e) => {
@@ -63,6 +64,7 @@ export class App extends Component {
 			document.getElementById('set-schedule').files = e.dataTransfer.files;
 		}
 
+		// paste schedule feature
 		window.addEventListener('paste', e => {
 			this.setSchedule(e.clipboardData.files[0])
 			document.getElementById('set-schedule').files = e.clipboardData.files;
@@ -77,21 +79,28 @@ export class App extends Component {
 		this.setState({scheduleStatus: status, scheduleError: error ?? false});
 	}
 
+	/**
+	 * Sets schedule data and clears schedule data and schedule changed status.
+	 * 
+	 * @param {*} file file uploaded by user
+	 */
 	setSchedule = (file) => {
 		const scheduleFile = new FormData();
 		const scheduleType = file.type;
-		if (scheduleType === 'image/png') {
-			scheduleFile.append("image", file, "schedule.png");
+
+		// ensure file type is image
+		if (scheduleType === 'image/png' || scheduleType === 'image/jpeg') {
+			// adds to form data
+			if (scheduleType === 'image/png') {
+				scheduleFile.append("image", file, "schedule.png");
+			} else {
+				scheduleFile.append("image", file, "schedule.jpg");
+			}
 			const schedulePreview = URL.createObjectURL(file);
 	
+			// update state and clear status
 			this.setState({scheduleFile, schedulePreview, scheduleType, scheduleData: undefined, scheduleICS: undefined, scheduleChanged: true});
 			this.setStatus('')
-		} else if (scheduleType === 'image/jpeg') {
-			scheduleFile.append("image", file, "schedule.jpg");
-			const schedulePreview = URL.createObjectURL(file);
-	
-			this.setStatus('')
-			this.setState({scheduleFile, schedulePreview, scheduleType, scheduleData: undefined, scheduleICS: undefined, scheduleChanged: true});
 		}
 		// } else if (scheduleType === 'application/pdf') {
 		// 	scheduleFile.append("pdf", e.target.files[0], "schedule.pdf")
@@ -107,19 +116,26 @@ export class App extends Component {
 		// }
 	}
 
+	// Send schedule to backend and create json data / ics file
 	sendSchedule = (callback) => {
 		if (!this.state.sendScheduleDelay) {
 			const scheduleFile = this.state.scheduleFile;
+			// add quarter to form data
 			scheduleFile.append("quarter", this.state.scheduleQuarter);
 
+			// set delay to true, update schedule file, and send schedule
 			this.setState({sendScheduleDelay: true, scheduleFile, scheduleChanged: false}, () => {
 				let finished = false;
 				this.setStatus("Processing...")
+
+				// if request takes too long, err
 				setTimeout(() => {
 					if (!finished) {
 						this.setStatus("Request is taking a long time. Please try again later.", true)
 					}
 				}, 10000)
+
+				// send request
 				const requestPath = this.state.scheduleType.includes('image') ? 'convertimage' : 'convertpdf';
 				axios.post(`/api/${requestPath}`, this.state.scheduleFile).then(res => {
 					this.setState({scheduleData: JSON.parse(res.data)})
@@ -130,20 +146,23 @@ export class App extends Component {
 						throw error;
 					}
 
+					// update finished to prevent timeout error, update state / status, call callback
 					finished = true;
-
 					this.setStatus("Done!")
 					this.setState({scheduleData: JSON.parse(res.data), scheduleICS: value}, callback)
 				}).catch(err => {
 					console.log(err);
 				})
 			})
+
+			// reset send schedule delay
 			setTimeout(() => {
 				this.setState({sendScheduleDelay: false})
-			}, 1000);
+			}, 3000);
 		}
 	}
 
+	// Determine if user filled out all required fields and updates error message as well
 	validRequest = () => {
 		let errorMessage = "";
 
@@ -163,6 +182,7 @@ export class App extends Component {
 		}
 	}
 
+	// downloads the schedule as an ics file, sends schedule if schedule has changed
 	downloadSchedule = (firstRun = true) => {
 		if (!this.validRequest()) {
 			return;

@@ -1,4 +1,82 @@
-// TODO: make scrapable, https://blink.ucsd.edu/instructors/courses/schedule-of-classes/subject-codes.html
+/**
+ * Constants used in the OCR process.
+ */
+
+// TODO: make into something not as ugly, probably a regex match
+// List of all accepted weekdays, used for detecting professor names
+const acceptedWeekdays = 
+["F", 
+"Th", 
+"ThF", 
+"W", 
+"WF", 
+"WTh", 
+"WThF", 
+"Tu", 
+"TuF", 
+"TuTh", 
+"TuThF", 
+"TuW", 
+"TuWF", 
+"TuWTh", 
+"TuWThF", 
+"M", 
+"MF", 
+"MTh", 
+"MThF", 
+"MW", 
+"MWF", 
+"MWTh", 
+"MWThF", 
+"MTu", 
+"MTuF", 
+"MTuTh", 
+"MTuThF", 
+"MTuW", 
+"MTuWF", 
+"MTuWTh", 
+"MTuWThF", 
+"Sa",
+"Su"];
+
+// a regex to ensure parsed course event time is in the correct format 
+const timeRegexMatch = /[0-9]{1,2}:[0-9]{2}[ap]-[0-9]{1,2}:[0-9]{2}[ap]/gm;
+
+// a list of academic quarters' start, end, and holidays
+const academicQuarters = {
+    spring2023: {
+        start:  new Date(new Date('4/3/2023').toLocaleDateString('en-US', {timeZone: 'America/Los_Angeles'})),
+        end: new Date(new Date('6/10/2023').toLocaleDateString('en-US', {timeZone: 'America/Los_Angeles'})),
+        excludedDates: ['20230529'] 
+    },
+    winter2023: {
+        start:  new Date(new Date('1/9/2023').toLocaleDateString('en-US', {timeZone: 'America/Los_Angeles'})),
+        end: new Date(new Date('3/18/2023').toLocaleDateString('en-US', {timeZone: 'America/Los_Angeles'})),
+        excludedDates: ['20230116', '20230220']
+    }
+}
+
+// conversion from weekday string to number
+const weekdays = {'Mo': 0, 'Tu': 1, 'We': 2, 'Th': 3, 'Fr': 4, 'Sa': 5, 'Su': 6};
+
+// list of string to split schedule into respective separate courses, keywords at the end of courses
+const splitCourseToEventsAfter = ["Enrolled Drop Change", "Planned Remove Enroll"]
+
+// list of string to split schedule into respective separate course events, keywords at the beginning of course events
+// / [A-Z0-9][0-9]{2} [A-Z]{2} /gm: matches section code and also type of course event for extra validation, e.g. B00 LE, 100 IN
+const splitCourseToEventsBefore = [" Midterm ", " Final Exam ", / [A-Z0-9][0-9]{2} [A-Z]{2} /gm]
+
+// list of grading options for parsing and validation
+const gradingOptions = ["L", "P/NP"];
+
+// list of common errors in OCR, and their replacements
+const commonErrors = [[" ВОО ", " B00 "], [" DOO ", " D00 "], [" BOO ", " B00 "]];
+
+// list of strings to omit from the OCR output
+const omittedStrings = ["|", "=", "<"];
+
+// TODO: make scrapable
+// List of all departments, copy pasted table from https://blink.ucsd.edu/instructors/courses/schedule-of-classes/subject-codes.html 
 const deptString = `<tbody>
 <tr>
 <th>Code</th>
@@ -838,67 +916,4 @@ const deptString = `<tbody>
 </tr>
 </tbody>`;
 
-// TODO: make into something not as ugly, probably a regex match
-const acceptedWeekdays = 
-["F", 
-"Th", 
-"ThF", 
-"W", 
-"WF", 
-"WTh", 
-"WThF", 
-"Tu", 
-"TuF", 
-"TuTh", 
-"TuThF", 
-"TuW", 
-"TuWF", 
-"TuWTh", 
-"TuWThF", 
-"M", 
-"MF", 
-"MTh", 
-"MThF", 
-"MW", 
-"MWF", 
-"MWTh", 
-"MWThF", 
-"MTu", 
-"MTuF", 
-"MTuTh", 
-"MTuThF", 
-"MTuW", 
-"MTuWF", 
-"MTuWTh", 
-"MTuWThF", 
-"Sa",
-"Su"];
-
-const timeRegexMatch = /[0-9]{1,2}:[0-9]{2}[ap]-[0-9]{1,2}:[0-9]{2}[ap]/gm;
-
-const academicQuarters = {
-    spring2023: {
-        start:  new Date(new Date('4/3/2023').toLocaleDateString('en-US', {timeZone: 'America/Los_Angeles'})),
-        end: new Date(new Date('6/10/2023').toLocaleDateString('en-US', {timeZone: 'America/Los_Angeles'})),
-        excludedDates: ['20230529'] 
-    },
-    winter2023: {
-        start:  new Date(new Date('1/9/2023').toLocaleDateString('en-US', {timeZone: 'America/Los_Angeles'})),
-        end: new Date(new Date('3/18/2023').toLocaleDateString('en-US', {timeZone: 'America/Los_Angeles'})),
-        excludedDates: ['20230116', '20230220']
-    }
-}
-
-const weekdays = {'M': 0, 'Tu': 1, 'W': 2, 'Th': 3, 'F': 4, 'Sa': 5, 'Su': 6};
-const splitCourseToEventsAfter = ["Enrolled Drop Change", "Planned Remove Enroll"]
-const splitCourseToEventsBefore = [" Midterm ", " Final Exam ", / [A-Z0-9][0-9]{2} [A-Z]{2} /gm, / [0-9]{3} IN /gm]
-
-const gradingOptions = ["L", "P/NP"];
-const commonErrors = [[" ВОО ", " B00 "], [" DOO ", " D00 "], [" BOO ", " B00 "]];
-const omittedStrings = ["|", "=", "<"];
-
-const testText1 = "CSE 15L Software Tools & Techniques Lab ВОО LE Politz,Joseph Gibbs L 2.00 MW 10:00a-10:50a PETER 108 Enrolled Drop Change B07 LA Th 4:00p-5:50p EBU3B B270 Final Exam FI Sa 03/18/2023 3:00p-5:59p TBA TBA CSE 20 Discrete Mathematics A00 LE Jones,Miles E L 4.00 TuTh 8:00a-9:20a WLH 2001 Enrolled Drop Change A01 DI F 12:00p-12:50p WLH 2001 Final Exam FI Th 03/23/2023 8:00a-10:59a TBA TBA CSE 199 Independent Study 004 IN Moshiri Niema,Alexander P/NP 4.00 TBA TBA TBA TBA Enrolled Drop Change MMW 12 Transforming Traditions A00 LE Balberg,Mira L 6.00 TuTh 9:30a-10:50a WLH 2001 Enrolled Drop Change A22 DI WF 9:00a-9:50a ASANT 123B Final Exam FI Tu 03/21/2023 8:00a-10:59a TBA TBA";
-const testText2 = "AWP 4A Analytical Writing A 020 SE Wilson,Natalie Ann P/NP 4.00 TuTh 11:00a-12:20p CENTR 208 Enrolled Drop Change CSE 12 Basic Data Struct & OO Design A00 LE Cao,Yingjun L 4.00 MWF 8:00a-8:50a WLH 2001 Enrolled Drop Change A01 DI M 3:00p-3:50p WLH 2001 Final Exam IYSIYō FI Sa 03/18/2023 8:00a-10:59a TBA TBA CSE 15L Software Tools & Techniques Lab A00 LE Politz,Joseph Gibbs L 2.00 MW 9:00a-9:50a PETER 108 Enrolled Drop Change A07 LA Th 2:00p-3:50p EBU3B B260 Final Exam FI Sa 03/18/2023 3:00p-5:59p TBA TBA CSE 20 Discrete Mathematics A00 LE Jones,Miles E L 4.00 TuTh 8:00a-9:20a WLH 2001 Enrolled Drop Change A01 DI F 12:00p-12:50p WLH 2001 Final Exam FI Th 03/23/2023 8:00a-10:59a TBA TBA Taylor,Alexander MUS 95E Chamber Orchestra BOO ST L Lawther 2.00 Tu 6:30p-9:20p CPMC 136 Enrolled Drop Change";
-// TODO: add other constants for validation
-
-module.exports = {deptString, acceptedWeekdays, splitCourseToEventsAfter, splitCourseToEventsBefore, testText1, testText2, gradingOptions, commonErrors, weekdays, academicQuarters, omittedStrings, timeRegexMatch};
+module.exports = {deptString, acceptedWeekdays, splitCourseToEventsAfter, splitCourseToEventsBefore, gradingOptions, commonErrors, weekdays, academicQuarters, omittedStrings, timeRegexMatch};

@@ -74,15 +74,18 @@ passport.use(new GoogleStrategy({
 passport.serializeUser(authFunctions.serializeUser)
 passport.deserializeUser(authFunctions.deserializeUser)
 
+// default expres-generator middleware setup
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// routes
 app.use('/api', indexRouter);
 app.use('/api/auth', authRouter);
 
+// serve frontend website static assets if in production
 if (process.env.NODE_ENV === "production" || process.env.NODE_ENV === "staging") {
     app.use(express.static(path.join(__dirname, 'frontend/build')))
     app.get("*", (req, res) => {

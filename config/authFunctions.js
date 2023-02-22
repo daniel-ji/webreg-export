@@ -1,3 +1,7 @@
+/**
+ * Authorization functions, used by passport.js. Feature not implemented yet, at a bit of a stand still.
+ */
+
 const verify = (request, accessToken, refreshToken, profile, done) => {
     if (profile.email.includes('@ucsd.edu') === false) {
         return done(null, false, {message: 'Not a UCSD email'})

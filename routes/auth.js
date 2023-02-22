@@ -1,3 +1,7 @@
+/**
+ * Auth Routes, uses passport.js and Google OAuth2.0.
+ */
+
 const express = require('express');
 const router = express.Router();
 

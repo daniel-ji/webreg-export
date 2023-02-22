@@ -1,9 +1,11 @@
 #!/usr/bin/env node
+/**
+ * From express-generator
+*/
 
 /**
  * Module dependencies.
  */
-
 var app = require('../app');
 var debug = require('debug')('ucsd-better-calendar:server');
 var http = require('http');
