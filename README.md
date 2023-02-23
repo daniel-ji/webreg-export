@@ -8,7 +8,9 @@ Created by: Daniel Ji (daji@ucsd.edu) with the help of Owen Miller, Emmett Panga
 
 Feedback form: https://forms.gle/iCZ6Fu5Lv9gBEXLk8
 
-## Predecessors to this app:
+## Alternatives to this app:
+
+Web-scraping based alternative, acts as a bookmark: https://adoryvo.github.io/calendarize-webreg/ (also created recently by a UCSD student, Adory Vo!)
 
 Chrome extension: https://chrome.google.com/webstore/detail/ucsd-schedule-to-calendar/haafakimhdpglinagaadlgebflifeiho?hl=en-US
 
