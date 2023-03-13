@@ -90,11 +90,11 @@ async function getText(image) {
             }
 
             // determine if space should be added before detection
-            const addSpace = (noSpaceDelimiters.includes(detection.description) || 
+            const dontAddSpace = (noSpaceDelimiters.includes(detection.description) || 
                 noSpaceDelimiters.includes(detections[index-1].description));
             
             // add detection to text and update lastTopY
-            text += (addSpace ? "" : " ") + detection.description;
+            text += (dontAddSpace ? "" : " ") + detection.description;
             lastTopY = detection.boundingPoly.vertices[0].y;
         }
 

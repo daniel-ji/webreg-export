@@ -71,11 +71,8 @@ function getStartDay(date, courseEvent) {
     const weekdays = courseEvent.days;
     // get day of week of first day of class, if it's tu / th / sat / sun, get first two letters, else get first letter
     let day = weekdays[0] === 'T' || weekdays[0] === 'S' ? weekdays[0] + weekdays[1] : weekdays[0];
-    console.log(day)
-    console.log(constants.weekdays[day])
     // convert day of week to number and get first date that is either on or before provided date variable 
     const startDay = new Date(date.setDate(date.getDate() + (constants.weekdays[day] + 1 + 7 - date.getDay()) % 7));
-    console.log(startDay)
     // return ics array format of start day 
     return getDay(startDay, courseEvent);
 }
@@ -238,7 +235,7 @@ function getJSON(text) {
                 // for the main course event (like lecture), it will have a professor, grade option, and units, so add those
                 if (!constants.acceptedWeekdays.includes(splitCourseArray[0])) {
                     // keep on adding words to professor until we reach a valid weekday
-                    while (splitCourseArray.length !== 0 && !constants.gradingOptions.includes(splitCourseArray[0])) {
+                    while (splitCourseArray.length !== 0 && !constants.gradingOptions.includes(splitCourseArray[0]) && isNaN(splitCourseArray[0])) {
                         professor += splitCourseArray.shift() + " ";
                     }
                     professor = professor.trim();
@@ -247,7 +244,14 @@ function getJSON(text) {
                     professor = professor.replaceAll('.', '. ');
 
                     // adds grade option and units
-                    gradeOption = splitCourseArray.shift();
+
+                    // for handling the case that a gradeOption doesn't get read
+                    if (!isNaN(splitCourseArray[0])) {
+                        gradeOption = "L";
+                    } else {
+                        gradeOption = splitCourseArray.shift();
+                    }
+
                     units = splitCourseArray.shift();
                 }
 
