@@ -187,9 +187,6 @@ function getRecurrence(courseEvent, academicQuarter) {
 function getJSON(text) {
     const courseEvents = [];
 
-    // fix common errors before parsing
-    text = fixCommonErrors(text);
-
     // split text into courses
     const courses = splitArrayByPattern(text, getListOfDepartments(true));
 
@@ -275,18 +272,7 @@ function getJSON(text) {
     })
 
     return courseEvents;
-}
-
-/**
- * Fix common errors in text (see constants).
- */
-function fixCommonErrors(text) {
-    constants.commonErrors.forEach(error => {
-        text = text.replaceAll(error[0], error[1])
-    })
-
-    return text;
-}
+}c
 
 /**
  * Splits text into an array by provided String / Regex pattern.

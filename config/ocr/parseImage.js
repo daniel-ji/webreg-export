@@ -96,6 +96,7 @@ async function getText(image) {
                 noSpaceDelimiters.includes(detections[index+1]?.description));
             
             // add detection to text and update lastTopY
+            text = fixCommonErrors(text);
             text = text.replace(/[^\x00-\x7F]/g, "");
             text += detection.description + (dontAddSpace ? "" : " ");
             lastTopY = detection.boundingPoly.vertices[0].y;
@@ -176,6 +177,17 @@ function cropText(text) {
         console.log(err);
         throw err;
     }
+}
+
+/**
+ * Fix common errors in text (see constants).
+ */
+function fixCommonErrors(text) {
+    constants.commonErrors.forEach(error => {
+        text = text.replaceAll(error[0], error[1])
+    })
+
+    return text;
 }
 
 module.exports = {getText}
