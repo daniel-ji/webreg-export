@@ -49,8 +49,6 @@ async function getText(image) {
             }
         })
 
-        console.log(detections)
-
         // text from image
         let text = "";
         let lastTopY = 0;
@@ -102,7 +100,6 @@ async function getText(image) {
             lastTopY = detection.boundingPoly.vertices[0].y;
         }
 
-        console.log(text);
         console.log(cropText(text));
         
         return cropText(text);

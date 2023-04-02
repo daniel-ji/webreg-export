@@ -207,8 +207,6 @@ function getJSON(text) {
         let gradeOption = "";
         let units = "";
 
-        console.log(splitCourse);
-
         // loop through actual course events and create course event, assumes that parsing is correct (TODO: actually ensure it's correct)
         for (let i = 1; i < splitCourse.length; i++) {
             // split course event into individual fields
