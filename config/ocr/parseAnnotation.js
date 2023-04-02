@@ -12,7 +12,7 @@ function getICS(text, academicQuarter, json = false) {
     const jsonText = json ? text : getJSON(text);
     const ICSData = [];
 
-    console.log(jsonText);
+    console.log(JSON.stringify(jsonText));
 
     // loop through each course event and create ICS event
     for (const courseEvent of jsonText) {
