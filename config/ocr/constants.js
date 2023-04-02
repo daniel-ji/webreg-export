@@ -70,7 +70,7 @@ const splitCourseToEventsBefore = [" Midterm ", " Final Exam ", / [A-Z0-9][0-9]{
 const gradingOptions = ["L", "P/NP"];
 
 // list of common errors in OCR, and their replacements
-const commonErrors = [[" ВОО ", " B00 "], [" DOO ", " D00 "], [" BOO ", " B00 "]];
+const commonErrors = [[" ВОО ", " B00 "], [" DOO ", " D00 "], [" BOO ", " B00 "], [ " COO ", " C00 "], [" AOO " , " A00 "], [" EOO ", "E00 "], [" FOO "], [" F00 "]];
 
 // list of strings to omit from the OCR output
 const omittedStrings = ["|", "=", "<"];

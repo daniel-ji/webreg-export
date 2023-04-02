@@ -96,6 +96,7 @@ async function getText(image) {
                 noSpaceDelimiters.includes(detections[index+1]?.description));
             
             // add detection to text and update lastTopY
+            text = text.replace(/[^\x00-\x7F]/g, "");
             text += detection.description + (dontAddSpace ? "" : " ");
             lastTopY = detection.boundingPoly.vertices[0].y;
         }
