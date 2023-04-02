@@ -272,7 +272,7 @@ function getJSON(text) {
     })
 
     return courseEvents;
-}c
+}
 
 /**
  * Splits text into an array by provided String / Regex pattern.
