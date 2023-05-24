@@ -225,6 +225,8 @@ export class App extends Component {
 						<option value="N/a">Select Schedule's Academic Quarter</option>
 						<option value="winter2023">Winter 2023</option>
 						<option value="spring2023">Spring 2023</option>
+						<option value="fall2023">Fall 2023</option>
+						<option value="winter2024">Winter 2024</option>
 					</select>
 				</div>
 				<button className="btn btn-primary mt-4 mb-3" onClick={this.downloadSchedule}>Download Schedule (ICS Format)</button>
