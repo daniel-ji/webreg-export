@@ -72,7 +72,7 @@ export class App extends Component {
 	}
 
 	setScheduleQuarter = (e) => {
-		this.setState({scheduleQuarter: e.target.value, scheduleQuarterChanged: true})
+		this.setState({scheduleQuarter: e.target.value, scheduleChanged: true})
 	}
 
 	setStatus = (status, error) => {
