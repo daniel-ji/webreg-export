@@ -59,7 +59,7 @@ async function getText(image) {
         // loop through detections and add to text
         for (let index = 0; index < detections.length; index++) {
             const detection = detections[index];
-
+            
             // skip if detection is in omitted strings list
             if (constants.omittedStrings.includes(detection.description)) {
                 continue;
@@ -94,15 +94,14 @@ async function getText(image) {
                 noSpaceDelimiters.includes(detections[index+1]?.description));
             
             // add detection to text and update lastTopY
-            text = fixCommonErrors(text);
             text = text.replace(/[^\x00-\x7F]/g, "");
             text += detection.description + (dontAddSpace ? "" : " ");
             lastTopY = detection.boundingPoly.vertices[0].y;
         }
-
-        console.log(cropText(text));
         
-        return cropText(text);
+        console.log(cropText(fixCommonErrors(text)));
+        
+        return cropText(fixCommonErrors(text));
     } catch (err) {
         console.log(err);
         throw err;
