@@ -74,7 +74,7 @@ const splitCourseToEventsAfter = ["Enrolled Drop Change", "Planned Remove Enroll
 
 // list of string to split schedule into respective separate course events, keywords at the beginning of course events
 // / [A-Z0-9][0-9]{2} [A-Z]{2} /gm: matches section code and also type of course event for extra validation, e.g. B00 LE, 100 IN
-const splitCourseToEventsBefore = [" Midterm ", " Final Exam ", / [A-Z0-9][0-9]{2} [A-Z]{2} /gm]
+const splitCourseToEventsBefore = [" Midterm ", " Final Exam ", / [A-Z0-9][0-9]{2} [A-Z]{2} /gm];
 
 // list of grading options for parsing and validation
 const gradingOptions = ["L", "P/NP"];
