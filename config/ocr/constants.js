@@ -55,13 +55,13 @@ const academicQuarters = {
         excludedDates: ['20230116', '20230220']
     },
     fall2023: {
-        start:  new Date(new Date('9/28/2023').toLocaleDateString('en-US', {timeZone: 'America/Los_Angeles'})),
-        end: new Date(new Date('12/9/2023').toLocaleDateString('en-US', {timeZone: 'America/Los_Angeles'})),
+        start:  new Date(new Date('9/27/2023').toLocaleDateString('en-US', {timeZone: 'America/Los_Angeles'})),
+        end: new Date(new Date('12/10/2023').toLocaleDateString('en-US', {timeZone: 'America/Los_Angeles'})),
         excludedDates: ['20231110', '20231123', '20231124', '20231125']
     },
     winter2024: {
-        start:  new Date(new Date('1/8/2024').toLocaleDateString('en-US', {timeZone: 'America/Los_Angeles'})),
-        end: new Date(new Date('3/16/2024').toLocaleDateString('en-US', {timeZone: 'America/Los_Angeles'})),
+        start:  new Date(new Date('1/9/2024').toLocaleDateString('en-US', {timeZone: 'America/Los_Angeles'})),
+        end: new Date(new Date('3/17/2024').toLocaleDateString('en-US', {timeZone: 'America/Los_Angeles'})),
         excludedDates: ['20240115', '20240219']
     },
 }
