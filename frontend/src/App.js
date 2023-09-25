@@ -245,9 +245,8 @@ export class App extends Component {
 				<div className="my-4 footnote" id="preface">
 					<h4 className="mb-4">Preface</h4>
 					<p>Thank you for visiting the site! <b>This site takes a screenshot of your schedule and converts it into an .ics file that can be imported into your calendar (Google Calendar, Apple Calendar, Microsoft Outlook, etc.)</b></p>
-					<p>This app is not affiliated with UCSD. It is still in development and contains bugs. Apologies for any difficulty you may experience while trying to use the app. The code is open source and can be found at <a href="https://github.com/ucsd-team-rocket/webreg-export" target="_blank" rel="noreferrer">https://github.com/ucsd-team-rocket/webreg-export</a></p>
+					<p>This app is not affiliated with UCSD. It is still in development and contains bugs. Apologies for any difficulty you may experience while trying to use the app.</p>
 					<p>To submit feedback, which is greatly appreciated: <a href="https://forms.gle/iCZ6Fu5Lv9gBEXLk8" target="_blank" rel="noreferrer">https://forms.gle/iCZ6Fu5Lv9gBEXLk8</a>.</p> 
-					<p>Contact daji@ucsd.edu for any further questions / comments / concerns.</p>
 					<p>Regarding privacy, your uploaded schedule is stored in a server temporarily and then deleted immediately after it has been processed.</p>
 				</div>
 				<div className="my-4 content">
