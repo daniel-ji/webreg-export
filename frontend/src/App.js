@@ -200,6 +200,7 @@ export class App extends Component {
 			<div className="App">
 				<h1 className="mt-5 text-center">UCSD WebReg Export App</h1>
 				<div className="mt-4 footnote text-center w-100" id="footnote">
+					<h4 className="mb-4">{'Get Your Classes on Google Calendar in 2 Minutes!'}</h4>
 					<p>This site takes your WebReg schedule and converts it into an .ics file that can be imported into your calendar (Google Calendar, Apple Calendar, Microsoft Outlook, etc.)</p>
 					<p><strong>Privacy is our utmost concern. Your uploaded file is stored temporarily and then deleted immediately after. No personal information is ever processed / stored.</strong></p>
 				</div>
@@ -242,17 +243,20 @@ export class App extends Component {
 				<div className="my-4 content" id="next-steps">
 					<h4 className="mb-4">Next Steps - Adding Downloaded (ICS) Schedule to Google Calendar</h4>
 					<p>To import your downloaded schedule (a .ics file) into Google Calendar, follow these steps:</p>
-					<li>Locate 'Other calendars' on the left sidebar of your Google Calendar, near the bottom. Press the plus sign.</li>
-					<img className="my-3" src={locateImportImg} alt="Locating the import button" /><br />
-					<li className="my-4">Select 'Import'.</li>
-					<img className="my-3" src={importButtonImg} alt="The import button" /><br />
-					<li>In the new window, select the ICS file you downloaded. </li>
-					<li>Select the calendar you would like to import it into.</li>
-					<li>Press import!</li>
-					<img className="my-3" src={importCalImg} alt="Importing the calendar." /><br />
+					<ol>
+						<li>Locate 'Other calendars' on the left sidebar of your Google Calendar, near the bottom. <strong>Press the plus sign.</strong></li>
+						<img className="my-3" style={{ maxHeight: '80vh' }} src={locateImportImg} alt="Locating the import button" /><br />
+						<li className="my-4">Select 'Import'.</li>
+						<img className="my-3" style={{ maxHeight: '40vh' }} src={importButtonImg} alt="The import button" /><br />
+						<li>In the new window, select the ICS file you downloaded. </li>
+						<li>Select the calendar you would like to import it into.</li>
+						<li>Press import!</li>
+						<img className="my-3" src={importCalImg} alt="Importing the calendar." /><br />
+					</ol>
 				</div>
 				<div className="my-4 content">
 					<h4 className="mb-4">Footnote</h4>
+					<p>Created by UCSD students!</p>
 					<p>This app is not affiliated with UCSD. Feedback is appreciated! <a href="https://forms.gle/iCZ6Fu5Lv9gBEXLk8" target="_blank" rel="noreferrer">https://forms.gle/iCZ6Fu5Lv9gBEXLk8</a>.</p>
 					<p>Source code: <a href="https://github.com/ucsd-team-rocket/webreg-export/" target="_blank" rel="noreferrer">https://github.com/ucsd-team-rocket/webreg-export/</a></p>
 				</div>
