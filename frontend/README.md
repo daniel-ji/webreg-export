@@ -1,1 +1,0 @@
-Frontend of UCSD Better Calendar App
