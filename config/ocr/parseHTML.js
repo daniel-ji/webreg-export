@@ -1,5 +1,17 @@
 const constants = require('./constants');
 
+/** Parses WebReg HTML to get course info text that can be further parsed by getICS function. 
+ * 
+ * @param {String} html HTML to be parsed
+*/
+function getText(html) {
+	const tableHTML= html.split('<tbody><tr class="jqgfirstrow" role="row" style="height:auto">')[1].split("</tbody>")[0];
+	const tableHTMLDisplayed = tableHTML.replaceAll(/<td[^>]*style="[^"]*display\s*:\s*none[^"]*"[^>]*>.*?<\/td>/gm, '');
+	const text = tableHTMLDisplayed.replaceAll(/(<[^>]*>?|\t|\n)/gm, ' ');
+	const finalText = text.replaceAll(/(&nbsp;| )+/gm, ' ');
+	return finalText;
+}
+
 /**
  * Returns ICS data from provided text, academic quarter, and whether the text is already in JSON format or not.
  * 
@@ -339,4 +351,4 @@ function getListOfDepartments(regex = false) {
 	return [...constants.deptString.matchAll(/<td>[A-Z]*<\/td>/gm)].map(match => match[0].substring(4, match[0].length - 5))
 }
 
-module.exports = { getJSON, getICS, getListOfDepartments };
+module.exports = { getText, getJSON, getICS, getListOfDepartments };

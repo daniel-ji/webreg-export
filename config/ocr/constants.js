@@ -44,26 +44,21 @@ const timeRegexMatch = /[0-9]{1,2}:[0-9]{2}[ap]-[0-9]{1,2}:[0-9]{2}[ap]/gm;
 
 // a list of academic quarters' start, end, and holidays
 const academicQuarters = {
-    spring2023: {
-        start:  new Date(new Date('4/3/2023').toLocaleDateString('en-US', {timeZone: 'America/Los_Angeles'})),
-        end: new Date(new Date('6/10/2023').toLocaleDateString('en-US', {timeZone: 'America/Los_Angeles'})),
-        excludedDates: ['20230529'] 
-    },
-    winter2023: {
-        start:  new Date(new Date('1/9/2023').toLocaleDateString('en-US', {timeZone: 'America/Los_Angeles'})),
-        end: new Date(new Date('3/18/2023').toLocaleDateString('en-US', {timeZone: 'America/Los_Angeles'})),
-        excludedDates: ['20230116', '20230220']
-    },
     fall2023: {
         start:  new Date(new Date('9/25/2023').toLocaleDateString('en-US', {timeZone: 'America/Los_Angeles'})),
         end: new Date(new Date('12/10/2023').toLocaleDateString('en-US', {timeZone: 'America/Los_Angeles'})),
-        excludedDates: ['20231110', '20231123', '20231124', '20231125']
+        excludedDates: ['20231110', '20231123', '20231124']
     },
     winter2024: {
         start:  new Date(new Date('1/8/2024').toLocaleDateString('en-US', {timeZone: 'America/Los_Angeles'})),
         end: new Date(new Date('3/17/2024').toLocaleDateString('en-US', {timeZone: 'America/Los_Angeles'})),
         excludedDates: ['20240115', '20240219']
     },
+	spring2024: {
+		start: new Date(new Date('3/25/2024').toLocaleDateString('en-US', {timeZone: 'America/Los_Angeles'})),
+		end: new Date(new Date('6/7/2024').toLocaleDateString('en-US', {timeZone: 'America/Los_Angeles'})),
+		excludedDates: ['20240329', '20240527']
+	}
 }
 
 // conversion from weekday string to number
@@ -79,9 +74,9 @@ const splitCourseToEventsBefore = [" Midterm ", " Final Exam ", / [A-Z0-9][0-9]{
 // list of grading options for parsing and validation
 const gradingOptions = ["L", "P/NP"];
 
+// NOTE: both of these should no longer be needed with the HTML version of the schedule
 // list of common errors in OCR, and their replacements
 const commonErrors = [[" ВОО ", " B00 "], [" DOO ", " D00 "], [" BOO ", " B00 "], [ " COO ", " C00 "], [" AOO " , " A00 "], [" EOO ", " E00 "], [" FOO ", " F00 "], [" GOO ", " G00 "]];
-
 // list of strings to omit from the OCR output
 const omittedStrings = ["|", "=", "<", "Y"];
 
@@ -127,6 +122,10 @@ const deptString = `<tbody>
 <tr>
 <td>ANTH</td>
 <td>Anthropology</td>
+</tr>
+<tr>
+<td>ASTR</td>
+<td>Astronomy and Astrophysics</td>
 </tr>
 <tr>
 <td>AUD</td>
@@ -195,6 +194,10 @@ const deptString = `<tbody>
 <tr>
 <td>CAT</td>
 <td>Culture, Art, and Technology</td>
+</tr>
+<tr>
+<td>CCE</td>
+<td>Critical Community Engagement</td>
 </tr>
 <tr>
 <td>CCS</td>
@@ -303,6 +306,10 @@ const deptString = `<tbody>
 <tr>
 <td>EDS</td>
 <td>Education Studies</td>
+</tr>
+<tr>
+<td>EIGH</td>
+<td>Eighth College</td>
 </tr>
 <tr>
 <td>EMED</td>
@@ -451,10 +458,6 @@ const deptString = `<tbody>
 <tr>
 <td>HUM</td>
 <td>Humanities</td>
-</tr>
-<tr>
-<td>ICAM</td>
-<td>Computing and the Arts</td>
 </tr>
 <tr>
 <td>ICEP</td>

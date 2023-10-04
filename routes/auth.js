@@ -1,5 +1,5 @@
 /**
- * Auth Routes, uses passport.js and Google OAuth2.0.
+ * Auth Routes, uses passport.js and Google OAuth2.0. Not yet implemented.
  */
 
 const express = require('express');

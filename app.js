@@ -83,7 +83,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // routes
 app.use('/api', indexRouter);
-app.use('/api/auth', authRouter);
+// app.use('/api/auth', authRouter);
 
 // serve frontend website static assets if in production
 if (process.env.NODE_ENV === "production" || process.env.NODE_ENV === "staging") {
