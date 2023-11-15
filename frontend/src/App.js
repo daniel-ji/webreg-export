@@ -28,7 +28,7 @@ export class App extends Component {
 			scheduleStatus: '',
 			scheduleError: false,
 			// schedule's academic quarter
-			scheduleQuarter: "fall2023",
+			scheduleQuarter: "winter2024",
 			// whether or not to resend schedule to backend
 			scheduleChanged: true,
 		}
@@ -211,10 +211,10 @@ export class App extends Component {
 							Go to your WebReg schedule (<a href="https://act.ucsd.edu/webreg2" rel="noreferrer" target="_blank">https://act.ucsd.edu/webreg2</a>) and select a term / quarter.
 						</li>
 						<li>
-							Right click on the page and select "Save As...". Press Enter.
+							Right click on the page and select "Save As...". Press Enter (it should save a file called webregMain.html or something similar).
 						</li>
 						<li>
-							Upload the downloaded file below.
+							Upload the saved file file below.  
 						</li>
 					</ol>
 				</div>
@@ -231,8 +231,6 @@ export class App extends Component {
 					</label>
 					<select id="select-quarter" className="form-select" aria-label="Academic Quarter" onChange={this.setScheduleQuarter} value={this.state.scheduleQuarter}>
 						<option value="N/a">Select Schedule's Academic Quarter</option>
-						<option value="winter2023">Winter 2023</option>
-						<option value="spring2023">Spring 2023</option>
 						<option value="fall2023">Fall 2023</option>
 						<option value="winter2024">Winter 2024</option>
 					</select>
