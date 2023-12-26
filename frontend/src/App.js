@@ -85,9 +85,13 @@ export class App extends Component {
 	setSchedule = (file) => {
 		const scheduleFile = new FormData();
 
-		if (file.type === 'text/html') {
-			scheduleFile.append("html", file, "schedule.html")
-
+		if (file.type === 'text/html' || file.type === '' && file.name.endsWith('.webarchive')) {
+			if (file.type === 'text/html') {
+				scheduleFile.append("html", file, "schedule.html")
+			} else if (file.type === '' && file.name.endsWith('.webarchive')) {
+				scheduleFile.append("html", file, "schedule.webarchive")
+			}
+			
 			const fileReader = new FileReader();
 			fileReader.onload = (e) => {
 				this.setState({ scheduleFile, scheduleData: undefined, scheduleICS: undefined, scheduleChanged: true });
@@ -211,10 +215,10 @@ export class App extends Component {
 							Go to your WebReg schedule (<a href="https://act.ucsd.edu/webreg2" rel="noreferrer" target="_blank">https://act.ucsd.edu/webreg2</a>) and select a term / quarter.
 						</li>
 						<li>
-							Right click on the page and select "Save As...". Press Enter (it should save a file called webregMain.html or something similar).
+							Right click on the page and "Save As..." <strong>Webpage, Complete (Chrome) Option OR Web Archive (Safari) Option</strong>.<br />  (It should save a file called webregMain.html or something similar).
 						</li>
 						<li>
-							Upload the saved file file below.  
+							Upload the saved file file below.
 						</li>
 					</ol>
 				</div>
@@ -222,7 +226,7 @@ export class App extends Component {
 					<label htmlFor="set-schedule my-3 text-center">
 						<h4 className="mb-3">Upload your WebReg file:</h4>
 					</label>
-					<input className="form-control my-2" type="file" id="set-schedule" accept="text/html" onChange={(e) => this.setSchedule(e.target.files[0])} onClick={(e) => e.target.value = null} />
+					<input className="form-control my-2" type="file" id="set-schedule" onChange={(e) => this.setSchedule(e.target.files[0])} onClick={(e) => e.target.value = null} />
 					<div className="mb-4 mt-2 no-select" id="drag-drop-schedule">
 						Drag and Drop / Paste WebReg Here
 					</div>

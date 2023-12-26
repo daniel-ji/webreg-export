@@ -8,9 +8,6 @@ const multer = require('multer');
 const parseHTML = require('../config/ocr/parseHTML');
 const constants = require('../config/ocr/constants');
 
-// accepted types
-const ACCEPTED_HTMLTYPE = ['text/html']
-
 // multer storage for uploaded schedule photos
 const storage = multer.diskStorage({
 	destination: './tmp/uploads',
@@ -33,7 +30,10 @@ const upload = multer({
 		files: 5,
 	},
 	fileFilter: (req, file, cb) => {
-		if (req.path === '/converthtml' && ACCEPTED_HTMLTYPE.includes(file.mimetype)) {
+		console.log('Original name: ' + file.originalname);
+		console.log('Mimetype: ' + file.mimetype);
+		if (req.path === '/converthtml' && (file.minetype === 'text/html'
+			|| (file.mimetype === 'application/octet-stream' && file.originalname.endsWith('.webarchive')))) {
 			return cb(null, true);
 		}
 
@@ -56,7 +56,7 @@ router.get('/', (req, res, next) => {
 
 // convert html to ICS, returns 400 if no image or quarter is provided, 500 if error occurs
 router.post('/converthtml', upload.single('html'), (req, res, next) => {
-	// delete file after 20 seconds
+	// delete file after 10 seconds
 	if (req.file) {
 		setTimeout(() => {
 			fs.unlink(req.file.path, (err) => {
@@ -64,7 +64,7 @@ router.post('/converthtml', upload.single('html'), (req, res, next) => {
 					console.log(err);
 				}
 			});
-		}, 20000)
+		}, 10000)
 	}
 
 	// if no file or invalid quarter, invalid request, return 400
@@ -75,7 +75,7 @@ router.post('/converthtml', upload.single('html'), (req, res, next) => {
 	// try to parse image, if error occurs, return 500
 	try {
 		const html = fs.readFileSync(req.file.path, 'utf8');
-		
+
 		const text = parseHTML.getText(html);
 		return res.json(JSON.stringify(parseHTML.getICS(text, req.body.quarter)))
 	} catch (error) {
