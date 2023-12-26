@@ -1,53 +1,95 @@
-html, body {
-    margin: 0;
+html,
+body {
+	margin: 0;
 }
 
 .App {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 }
 
-#drag-drop-schedule {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: 3px solid grey;
-    border-radius: 5px;
-    padding: 5vh 5vw;
-    width: 100%;
-    cursor: copy;
-    transition: 0.5s;
+#intro-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	height: 90vh;
+}
+
+#site-title {
+	font-size: 5rem;
+}
+
+#preface-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	height: 90vh;
+
+	h3 {
+		text-align: center;
+	}
+}
+
+#form-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+
+	#drag-drop-schedule {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		border: 3px solid grey;
+		border-radius: 5px;
+		padding: 5vh 5vw;
+		width: 100%;
+		cursor: copy;
+		transition: 0.5s;
+	}
+}
+
+.next-button {
+	font-size: 1.5rem !important;
 }
 
 .dragged-over {
-    background-color: rgb(230, 230, 230);
+	background-color: rgb(230, 230, 230);
 }
 
 .sched-img-prev {
-    border-radius: 0.75rem;
-    border: 0.25rem solid #acacac;
-    max-width: 75%;
+	border-radius: 0.75rem;
+	border: 0.25rem solid #acacac;
+	max-width: 75%;
 }
 
 .content {
-    width: 80vw;
+	width: 80vw;
 
-    img {
-        max-width: 100%;
-    }
+	img {
+		max-width: 100%;
+	}
 }
 
 .footnote {
-    width: 80vw;
+	width: 80vw;
 }
 
 .no-select {
-    -webkit-touch-callout: none; /* iOS Safari */
-      -webkit-user-select: none; /* Safari */
-       -khtml-user-select: none; /* Konqueror HTML */
-         -moz-user-select: none; /* Old versions of Firefox */
-          -ms-user-select: none; /* Internet Explorer/Edge */
-              user-select: none; /* Non-prefixed version, currently
+	-webkit-touch-callout: none;
+	/* iOS Safari */
+	-webkit-user-select: none;
+	/* Safari */
+	-khtml-user-select: none;
+	/* Konqueror HTML */
+	-moz-user-select: none;
+	/* Old versions of Firefox */
+	-ms-user-select: none;
+	/* Internet Explorer/Edge */
+	user-select: none;
+	/* Non-prefixed version, currently
                                     supported by Chrome, Edge, Opera and Firefox */
-  }
+}

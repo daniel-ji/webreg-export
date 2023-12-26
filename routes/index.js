@@ -5,10 +5,12 @@ const router = express.Router();
 
 const multer = require('multer');
 
-const parseHTML = require('../config/ocr/parseHTML');
-const constants = require('../config/ocr/constants');
+const parseImage = require('../config/parseImage');
+const parseHTML = require('../config/parseHTML');
+const constants = require('../config/constants');
 
 // accepted types
+const ACCEPTED_IMAGETYPE = ['image/png', 'image/jpeg']
 const ACCEPTED_HTMLTYPE = ['text/html']
 
 // multer storage for uploaded schedule photos
@@ -33,6 +35,10 @@ const upload = multer({
 		files: 5,
 	},
 	fileFilter: (req, file, cb) => {
+		if (req.path === '/convertimage' && ACCEPTED_IMAGETYPE.includes(file.mimetype)) {
+			return cb(null, true);
+		}
+
 		if (req.path === '/converthtml' && ACCEPTED_HTMLTYPE.includes(file.mimetype)) {
 			return cb(null, true);
 		}
@@ -54,18 +60,9 @@ router.get('/', (req, res, next) => {
 // 	});
 // })
 
-// convert html to ICS, returns 400 if no image or quarter is provided, 500 if error occurs
-router.post('/converthtml', upload.single('html'), (req, res, next) => {
-	// delete file after 20 seconds
-	if (req.file) {
-		setTimeout(() => {
-			fs.unlink(req.file.path, (err) => {
-				if (err) {
-					console.log(err);
-				}
-			});
-		}, 20000)
-	}
+// convert image to ICS, returns 400 if no image file or quarter is provided, 500 if error occurs
+router.post('/convertimage', upload.single('image'), async (req, res, next) => {
+	delayedDeleteFile(req.file);
 
 	// if no file or invalid quarter, invalid request, return 400
 	if (!req.file || !Object.keys(constants.academicQuarters).includes(req.body.quarter)) {
@@ -74,8 +71,27 @@ router.post('/converthtml', upload.single('html'), (req, res, next) => {
 
 	// try to parse image, if error occurs, return 500
 	try {
+		const text = await parseImage.getText(req.file.path);
+		return res.json(JSON.stringify(parseImage.getICS(text, req.body.quarter)))
+	} catch (error) {
+		console.log(error);
+		return res.sendStatus(500);
+	}
+})
+
+
+// convert html to ICS, returns 400 if no html file or quarter is provided, 500 if error occurs
+router.post('/converthtml', upload.single('html'), (req, res, next) => {
+	delayedDeleteFile(req.file);
+
+	// if no file or invalid quarter, invalid request, return 400
+	if (!req.file || !Object.keys(constants.academicQuarters).includes(req.body.quarter)) {
+		return res.sendStatus(400);
+	}
+
+	// try to parse html, if error occurs, return 500
+	try {
 		const html = fs.readFileSync(req.file.path, 'utf8');
-		
 		const text = parseHTML.getText(html);
 		return res.json(JSON.stringify(parseHTML.getICS(text, req.body.quarter)))
 	} catch (error) {
@@ -83,5 +99,18 @@ router.post('/converthtml', upload.single('html'), (req, res, next) => {
 		return res.sendStatus(500);
 	}
 })
+
+// delete file after 20 seconds
+const delayedDeleteFile = (file) => {
+	if (file) {
+		setTimeout(() => {
+			fs.unlink(file.path, (err) => {
+				if (err) {
+					console.log(err);
+				}
+			});
+		}, 20000)
+	}
+}
 
 module.exports = router;

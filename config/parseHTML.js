@@ -200,7 +200,7 @@ function getJSON(text) {
 	const courseEvents = [];
 
 	// split text into courses
-	const courses = splitArrayByPattern(text, getListOfDepartments(true));
+	const courses = splitArrayByPattern(text, constants.getListOfDepartments(true));
 
 	// for each course, create course events
 	courses.forEach(course => {
@@ -337,18 +337,4 @@ function splitArrayByPattern(text, beforePatterns, afterPatterns = []) {
 	return splitArray;
 }
 
-/**
- * Returns an array of all departments in the form of strings or regex patterns.
- *
- * @param {boolean} [regex=false] whether to return regex patterns or strings
- * @return {Array} array of all departments
- */
-function getListOfDepartments(regex = false) {
-	if (regex) {
-		return [...constants.deptString.matchAll(/<td>[A-Z]*<\/td>/gm)].map(match => new RegExp(` ${match[0].substring(4, match[0].length - 5)} [0-9]`, 'gm'))
-	}
-
-	return [...constants.deptString.matchAll(/<td>[A-Z]*<\/td>/gm)].map(match => match[0].substring(4, match[0].length - 5))
-}
-
-module.exports = { getText, getJSON, getICS, getListOfDepartments };
+module.exports = { getText, getJSON, getICS };

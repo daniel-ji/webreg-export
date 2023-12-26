@@ -6,7 +6,6 @@
 
 const sizeOf = require('image-size');
 const constants = require('./constants');
-const parseHTML = require('./parseHTML');
 
 /**
  * Gets the text from an image, to be passed to parseHTML for parsing. 
@@ -31,7 +30,7 @@ async function getText(image) {
 		const detections = result.textAnnotations;
 
 		// get string list of ucsd departments 
-		const depts = parseHTML.getListOfDepartments();
+		const depts = constants.getListOfDepartments();
 
 		// sort text (approximation) before getting text height to help with getting the baseline text height
 		// sorts top to bottom, left to right
