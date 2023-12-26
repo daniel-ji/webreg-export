@@ -215,7 +215,7 @@ export class App extends Component {
 							Go to your WebReg schedule (<a href="https://act.ucsd.edu/webreg2" rel="noreferrer" target="_blank">https://act.ucsd.edu/webreg2</a>) and select a term / quarter.
 						</li>
 						<li>
-							Right click on the page and "Save As..." <strong>Webpage, Complete (Chrome) Option OR Web Archive (Safari) Option</strong>.<br />  (It should save a file called webregMain.html or something similar).
+							Right click on the page and "Save As..." <strong>Webpage, Complete (Chrome) Option OR Web Archive (Safari) Option</strong>.<br />  (It should save a file called webregMain.html or webregMain.webarchive or something similar).
 						</li>
 						<li>
 							Upload the saved file file below.
