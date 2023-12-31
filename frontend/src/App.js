@@ -91,7 +91,7 @@ export class App extends Component {
 			} else if (file.type === '' && file.name.endsWith('.webarchive')) {
 				scheduleFile.append("html", file, "schedule.webarchive")
 			}
-			
+
 			const fileReader = new FileReader();
 			fileReader.onload = (e) => {
 				this.setState({ scheduleFile, scheduleData: undefined, scheduleICS: undefined, scheduleChanged: true });
@@ -202,11 +202,10 @@ export class App extends Component {
 	render() {
 		return (
 			<div className="App">
-				<h1 className="mt-5 text-center">UCSD WebReg Export App</h1>
+				<h1 className="mt-5 text-center">UCSD WebReg Calendar App</h1>
 				<div className="mt-4 footnote text-center w-100" id="footnote">
-					<h4 className="mb-4">{'Get Your Classes on Google Calendar in 2 Minutes!'}</h4>
-					<p>This site takes your WebReg schedule and converts it into an .ics file that can be imported into your calendar (Google Calendar, Apple Calendar, Microsoft Outlook, etc.)</p>
-					<p><strong>Privacy is our utmost concern. Your uploaded file is stored temporarily and then deleted immediately after. No personal information is ever processed / stored.</strong></p>
+					<p>Turn your WebReg schedule into an .ics file that can be imported into your calendar (Google Calendar, Apple Calendar, etc.)</p>
+					<p><strong>Privacy is our utmost concern. No uploaded files or personal information is ever shared or saved.</strong></p>
 				</div>
 				<div className="my-4 content" id="first-steps">
 					<h4 className="mb-3">Instructions</h4>
@@ -217,19 +216,14 @@ export class App extends Component {
 						<li>
 							Right click on the page and "Save As..." <strong>Webpage, Complete (Chrome) Option OR Web Archive (Safari) Option</strong>.<br />  (It should save a file called webregMain.html or webregMain.webarchive or something similar).
 						</li>
-						<li>
-							Upload the saved file file below.
-						</li>
 					</ol>
 				</div>
 				<div className="mb-2 d-flex flex-column content">
-					<label htmlFor="set-schedule my-3 text-center">
-						<h4 className="mb-3">Upload your WebReg file:</h4>
+					<h4 className="mb-3">Upload your saved WebReg file:</h4>
+					<label className="mb-4 mt-2 no-select" id="drag-drop-schedule" htmlFor="set-schedule">
+						Drag / Paste WebReg Here (or click to upload)
+						<input className="form-control my-2 d-none" type="file" name="set-schedule" id="set-schedule" onChange={(e) => this.setSchedule(e.target.files[0])} onClick={(e) => e.target.value = null} />
 					</label>
-					<input className="form-control my-2" type="file" id="set-schedule" onChange={(e) => this.setSchedule(e.target.files[0])} onClick={(e) => e.target.value = null} />
-					<div className="mb-4 mt-2 no-select" id="drag-drop-schedule">
-						Drag and Drop / Paste WebReg Here
-					</div>
 					<label htmlFor="select-quarter" className="mt-4 mb-3">
 						<h4>Select Academic Quarter</h4>
 					</label>

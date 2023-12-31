@@ -5,8 +5,8 @@ const router = express.Router();
 
 const multer = require('multer');
 
-const parseHTML = require('../config/ocr/parseHTML');
-const constants = require('../config/ocr/constants');
+const parseHTML = require('../config/parse/parseHTML');
+const constants = require('../config/parse/constants');
 
 // multer storage for uploaded schedule photos
 const storage = multer.diskStorage({
