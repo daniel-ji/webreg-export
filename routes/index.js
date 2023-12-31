@@ -32,7 +32,7 @@ const upload = multer({
 	fileFilter: (req, file, cb) => {
 		console.log('Original name: ' + file.originalname);
 		console.log('Mimetype: ' + file.mimetype);
-		if (req.path === '/converthtml' && (file.minetype === 'text/html'
+		if (req.path === '/converthtml' && (file.mimetype === 'text/html'
 			|| (file.mimetype === 'application/octet-stream' && file.originalname.endsWith('.webarchive')))) {
 			return cb(null, true);
 		}
