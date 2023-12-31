@@ -220,8 +220,9 @@ export class App extends Component {
 				</div>
 				<div className="mb-2 d-flex flex-column content">
 					<h4 className="mb-3">Upload your saved WebReg file:</h4>
-					<label className="mb-4 mt-2 no-select" id="drag-drop-schedule" htmlFor="set-schedule">
-						Drag / Paste WebReg Here (or click to upload)
+					<label className="mb-4 mt-2 no-select d-flex flex-column" id="drag-drop-schedule" htmlFor="set-schedule">
+						<p className="mb-2">Drag / Paste WebReg Here (or click to upload)</p>
+						{this.state.scheduleFile && <p className="m-0"><br/><strong>Uploaded file: {this.state.scheduleFile.get('html').name}</strong></p>}
 						<input className="form-control my-2 d-none" type="file" name="set-schedule" id="set-schedule" onChange={(e) => this.setSchedule(e.target.files[0])} onClick={(e) => e.target.value = null} />
 					</label>
 					<label htmlFor="select-quarter" className="mt-4 mb-3">
