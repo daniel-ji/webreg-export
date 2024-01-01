@@ -5,7 +5,12 @@ const constants = require('./constants');
  * @param {String} html HTML to be parsed
 */
 function getText(html) {
-	const tableHTML= html.split('<tbody><tr class="jqgfirstrow" role="row" style="height:auto">')[1].split("</tbody>")[0];
+	let tableHTML;
+	try {
+		tableHTML= html.split('<tbody><tr class="jqgfirstrow" role="row" style="height:auto">')[1].split("</tbody>")[0];
+	} catch {
+		throw new Error('Invalid uploaded file. Please ensure you have saved the WebReg schedule as a Webpage, Complete (Chrome, Firefox) OR Web Archive (Safari).');
+	}
 	const tableHTMLDisplayed = tableHTML.replaceAll(/<td[^>]*style="[^"]*display\s*:\s*none[^"]*"[^>]*>.*?<\/td>/gm, '');
 	const text = tableHTMLDisplayed.replaceAll(/(<[^>]*>?|\t|\n)/gm, ' ');
 	const finalText = text.replaceAll(/(&nbsp;| )+/gm, ' ');

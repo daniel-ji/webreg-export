@@ -30,7 +30,6 @@ const upload = multer({
 		files: 5,
 	},
 	fileFilter: (req, file, cb) => {
-		console.log('Original name: ' + file.originalname);
 		console.log('Mimetype: ' + file.mimetype);
 		if (req.path === '/converthtml' && (file.mimetype === 'text/html'
 			|| (file.mimetype === 'application/octet-stream' && file.originalname.endsWith('.webarchive')))) {
@@ -76,11 +75,17 @@ router.post('/converthtml', upload.single('html'), (req, res, next) => {
 	try {
 		const html = fs.readFileSync(req.file.path, 'utf8');
 
-		const text = parseHTML.getText(html);
+		let text;
+		try {
+			text = parseHTML.getText(html);
+		} catch (error) {
+			console.log(error);
+			return res.status(500).send(error.message);
+		}
 		return res.json(JSON.stringify(parseHTML.getICS(text, req.body.quarter)))
 	} catch (error) {
 		console.log(error);
-		return res.sendStatus(500);
+		return res.status(500).send('Server error when creating schedule. Please try again later.');
 	}
 })
 

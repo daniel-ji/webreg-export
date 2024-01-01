@@ -18,6 +18,8 @@ export class App extends Component {
 		this.state = {
 			// actual schedule file (form data)
 			scheduleFile: undefined,
+			// name of original schedule file
+			scheduleFileName: undefined,
 			// delay to throttle schedule upload requests
 			sendScheduleDelay: false,
 			// schedule data received from request
@@ -94,12 +96,12 @@ export class App extends Component {
 
 			const fileReader = new FileReader();
 			fileReader.onload = (e) => {
-				this.setState({ scheduleFile, scheduleData: undefined, scheduleICS: undefined, scheduleChanged: true });
+				this.setState({ scheduleFile, scheduleData: undefined, scheduleICS: undefined, scheduleChanged: true, scheduleFileName: file.name });
 			}
 			fileReader.readAsText(file);
 		} else {
 			alert('Please make sure that you have uploaded the correct file (usually named webregMain.html).')
-			this.setState({ scheduleFile: undefined })
+			this.setState({ scheduleFile: undefined, scheduleFileName: undefined })
 		}
 	}
 
@@ -137,7 +139,9 @@ export class App extends Component {
 					this.setStatus("Done!")
 					this.setState({ scheduleData: JSON.parse(res.data), scheduleICS: value }, callback)
 				}).catch(err => {
-					console.log(err);
+					finished = true;
+					this.setState({ scheduleData: undefined, scheduleICS: undefined })
+					this.setStatus(err.response?.data ?? "Error creating schedule. Please try again later.", true)
 				})
 			})
 
@@ -145,6 +149,8 @@ export class App extends Component {
 			setTimeout(() => {
 				this.setState({ sendScheduleDelay: false })
 			}, 3000);
+		} else {
+			alert("Please wait a few seconds before uploading another schedule.")
 		}
 	}
 
@@ -214,7 +220,7 @@ export class App extends Component {
 							Go to your WebReg schedule (<a href="https://act.ucsd.edu/webreg2" rel="noreferrer" target="_blank">https://act.ucsd.edu/webreg2</a>) and select a term / quarter.
 						</li>
 						<li>
-							Right click on the page and "Save As..." <strong>Webpage, Complete (Chrome) Option OR Web Archive (Safari) Option</strong>.<br />  (It should save a file called webregMain.html or webregMain.webarchive or something similar).
+							Right click on the page and "Save As..." <strong>Webpage, Complete (Chrome, Firefox) OR Web Archive (Safari)</strong>.<br />  (It should save a file called webregMain.html or webregMain.webarchive or something similar).
 						</li>
 					</ol>
 				</div>
@@ -222,7 +228,7 @@ export class App extends Component {
 					<h4 className="mb-3">Upload your saved WebReg file:</h4>
 					<label className="mb-4 mt-2 no-select d-flex flex-column" id="drag-drop-schedule" htmlFor="set-schedule">
 						<p className="mb-2">Drag / Paste WebReg Here (or click to upload)</p>
-						{this.state.scheduleFile && <p className="m-0"><br/><strong>Uploaded file: {this.state.scheduleFile.get('html').name}</strong></p>}
+						{this.state.scheduleFile && <p className="m-0"><br /><strong>Uploaded file: {this.state.scheduleFileName}</strong></p>}
 						<input className="form-control my-2 d-none" type="file" name="set-schedule" id="set-schedule" onChange={(e) => this.setSchedule(e.target.files[0])} onClick={(e) => e.target.value = null} />
 					</label>
 					<label htmlFor="select-quarter" className="mt-4 mb-3">
