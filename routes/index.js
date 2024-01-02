@@ -30,7 +30,7 @@ const upload = multer({
 		files: 5,
 	},
 	fileFilter: (req, file, cb) => {
-		console.log('Mimetype: ' + file.mimetype);
+		console.log('Mimetype: ' + file.mimetype);;
 		if (req.path === '/converthtml' && (file.mimetype === 'text/html'
 			|| (file.mimetype === 'application/octet-stream' && file.originalname.endsWith('.webarchive')))) {
 			return cb(null, true);
@@ -55,6 +55,7 @@ router.get('/', (req, res, next) => {
 
 // convert html to ICS, returns 400 if no image or quarter is provided, 500 if error occurs
 router.post('/converthtml', upload.single('html'), (req, res, next) => {
+	console.log(req.file.size / 1000 + ' KB');
 	// delete file after 10 seconds
 	if (req.file) {
 		setTimeout(() => {
