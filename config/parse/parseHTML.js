@@ -14,6 +14,7 @@ function getText(html) {
 	const tableHTMLDisplayed = tableHTML.replaceAll(/<td[^>]*style="[^"]*display\s*:\s*none[^"]*"[^>]*>.*?<\/td>/gm, '');
 	const text = tableHTMLDisplayed.replaceAll(/(<[^>]*>?|\t|\n)/gm, ' ');
 	const finalText = text.replaceAll(/(&nbsp;| )+/gm, ' ');
+	console.log(finalText);
 	return finalText;
 }
 
