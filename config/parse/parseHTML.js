@@ -7,7 +7,8 @@ const constants = require('./constants');
 function getText(html) {
 	let tableHTML;
 	try {
-		tableHTML= html.split('<tbody><tr class="jqgfirstrow" role="row" style="height:auto">')[1].split("</tbody>")[0];
+		tableHTML = html.split('<table id="list-id-table"')[1];
+		tableHTML = tableHTML.split('<tbody><tr class="jqgfirstrow" role="row" style="height:auto">')[1].split("</tbody>")[0];
 	} catch {
 		throw new Error('Invalid uploaded file. Please ensure you have saved the WebReg schedule as a Webpage, Complete (Chrome, Firefox) OR Web Archive (Safari).');
 	}
