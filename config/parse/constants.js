@@ -55,8 +55,8 @@ const academicQuarters = {
         excludedDates: ['20240115', '20240219']
     },
 	spring2024: {
-		start: new Date(new Date('3/25/2024').toLocaleDateString('en-US', {timeZone: 'America/Los_Angeles'})),
-		end: new Date(new Date('6/7/2024').toLocaleDateString('en-US', {timeZone: 'America/Los_Angeles'})),
+		start: new Date(new Date('4/1/2024').toLocaleDateString('en-US', {timeZone: 'America/Los_Angeles'})),
+		end: new Date(new Date('6/9/2024').toLocaleDateString('en-US', {timeZone: 'America/Los_Angeles'})),
 		excludedDates: ['20240329', '20240527']
 	}
 }
