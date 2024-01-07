@@ -192,7 +192,7 @@ function getRecurrence(courseEvent, academicQuarter) {
 	const endDate = academicQuarter.end.toISOString().replaceAll(/[-:.]/gm, '');
 	// gets exclusion dates and converts to ics format
 	const exDate = academicQuarter.excludedDates.map((date) => {
-		const hour = (parseInt(startTime[0]) + (startTime[1].slice(-1) === 'p' ? 12 : 0)) + '';
+		const hour = (parseInt(startTime[0]) + ((startTime[1].slice(-1) === 'p' && startTime[0] !== '12') ? 12 : 0)) + '';
 		const time = startTime[1].slice(0, -1);
 		return '\nEXDATE:' + date + 'T' + hour.padStart(2, '0') + time + '00';
 	}).join('');
@@ -216,7 +216,7 @@ function getJSON(text) {
 	// for each course, create course events
 	courses.forEach(course => {
 		// split course into course code / name and actual course events
-		let splitCourse = splitArrayByPattern(course, constants.splitCourseToEventsBefore, constants.splitCourseToEventsAfter)
+		let splitCourse = splitArrayByPattern(course, constants.splitCourseToEventsBefore, constants.splitCourseToEventsAfter, true)
 
 		// edge case: when course event is not picked up by google ocr
 		if (splitCourse[0].split(" ").length >= 12 && splitCourse[0].match(/ [A-Z]{2} /gm)) {
@@ -316,8 +316,13 @@ function getJSON(text) {
  * @param {Array} afterPatterns patterns to split text by after the pattern occurrence
  * @returns {Array} array of split text
  */
-function splitArrayByPattern(text, beforePatterns, afterPatterns = []) {
+function splitArrayByPattern(text, beforePatterns, afterPatterns = [], isCourse = false) {
 	let indices = [];
+	// edge case for multiple discussions
+	if (isCourse && text.includes(' Discussion DI ')) {
+		text = text.replaceAll(' Discussion DI ', ' DI ');
+		text = text.replaceAll(' DI ', ' 000 DI ');
+	}
 	// get all the split indices for before patterns, all added to the indices array
 	beforePatterns.forEach(pattern => {
 		const regex = pattern instanceof RegExp ? pattern : new RegExp(`\\b${pattern}`, 'gm');

@@ -65,7 +65,7 @@ const academicQuarters = {
 const weekdays = {'M': 0, 'Tu': 1, 'W': 2, 'Th': 3, 'F': 4, 'Sa': 5, 'Su': 6};
 
 // list of string to split schedule into respective separate courses, keywords at the end of courses
-const splitCourseToEventsAfter = ["Enrolled Drop Change", "Planned Remove Enroll"]
+const splitCourseToEventsAfter = ["Enrolled Drop Change", "Planned Remove Enroll", /Waitlist \([\d]+\) Drop Change/gm]
 
 // list of string to split schedule into respective separate course events, keywords at the beginning of course events
 // / [A-Z0-9][0-9]{2} [A-Z]{2} /gm: matches section code and also type of course event for extra validation, e.g. B00 LE, 100 IN
