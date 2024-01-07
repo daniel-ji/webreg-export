@@ -64,7 +64,7 @@ function getICS(text, academicQuarter, json = false) {
 			title: courseEvent.courseCode + " " + courseEvent.courseType,
 			description:
 				`${courseEvent.courseCode}, ${courseEvent.courseName}
-Professor: ${courseEvent.professor}
+Professor: ${courseEvent.professor.replaceAll('  ', ' ')}
 Location: ${locationLink}
 Class Type: ${courseEvent.courseType}
 Section ${courseEvent.section}
