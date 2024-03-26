@@ -30,6 +30,8 @@ const upload = multer({
 		files: 5,
 	},
 	fileFilter: (req, file, cb) => {
+		const ua = req.headers['user-agent'];
+		console.log('User Agent: ' + ua);
 		console.log('Mimetype: ' + file.mimetype);;
 		if (req.path === '/converthtml' && (file.mimetype === 'text/html'
 			|| (file.mimetype === 'application/octet-stream' && file.originalname.endsWith('.webarchive')))) {
