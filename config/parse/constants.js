@@ -4,65 +4,65 @@
 
 // TODO: make into something not as ugly, probably a regex match
 // List of all accepted weekdays, used for detecting professor names
-const acceptedWeekdays = 
-["F", 
-"Th", 
-"ThF", 
-"W", 
-"WF", 
-"WTh", 
-"WThF", 
-"Tu", 
-"TuF", 
-"TuTh", 
-"TuThF", 
-"TuW", 
-"TuWF", 
-"TuWTh", 
-"TuWThF", 
-"M", 
-"MF", 
-"MTh", 
-"MThF", 
-"MW", 
-"MWF", 
-"MWTh", 
-"MWThF", 
-"MTu", 
-"MTuF", 
-"MTuTh", 
-"MTuThF", 
-"MTuW", 
-"MTuWF", 
-"MTuWTh", 
-"MTuWThF", 
-"Sa",
-"Su"];
+const acceptedWeekdays =
+	["F",
+		"Th",
+		"ThF",
+		"W",
+		"WF",
+		"WTh",
+		"WThF",
+		"Tu",
+		"TuF",
+		"TuTh",
+		"TuThF",
+		"TuW",
+		"TuWF",
+		"TuWTh",
+		"TuWThF",
+		"M",
+		"MF",
+		"MTh",
+		"MThF",
+		"MW",
+		"MWF",
+		"MWTh",
+		"MWThF",
+		"MTu",
+		"MTuF",
+		"MTuTh",
+		"MTuThF",
+		"MTuW",
+		"MTuWF",
+		"MTuWTh",
+		"MTuWThF",
+		"Sa",
+		"Su"];
 
 // a regex to ensure parsed course event time is in the correct format 
 const timeRegexMatch = /[0-9]{1,2}:[0-9]{2}[ap]-[0-9]{1,2}:[0-9]{2}[ap]/gm;
 
 // a list of academic quarters' start, end, and holidays
 const academicQuarters = {
-    fall2023: {
-        start:  new Date(new Date('9/25/2023').toLocaleDateString('en-US', {timeZone: 'America/Los_Angeles'})),
-        end: new Date(new Date('12/10/2023').toLocaleDateString('en-US', {timeZone: 'America/Los_Angeles'})),
-        excludedDates: ['20231110', '20231123', '20231124']
-    },
-    winter2024: {
-        start:  new Date(new Date('1/8/2024').toLocaleDateString('en-US', {timeZone: 'America/Los_Angeles'})),
-        end: new Date(new Date('3/17/2024').toLocaleDateString('en-US', {timeZone: 'America/Los_Angeles'})),
-        excludedDates: ['20240115', '20240219']
-    },
+	winter2024: {
+		start: new Date(new Date('1/8/2024').toLocaleDateString('en-US', { timeZone: 'America/Los_Angeles' })),
+		end: new Date(new Date('3/17/2024').toLocaleDateString('en-US', { timeZone: 'America/Los_Angeles' })),
+		excludedDates: ['20240115', '20240219']
+	},
 	spring2024: {
-		start: new Date(new Date('4/1/2024').toLocaleDateString('en-US', {timeZone: 'America/Los_Angeles'})),
-		end: new Date(new Date('6/9/2024').toLocaleDateString('en-US', {timeZone: 'America/Los_Angeles'})),
+		start: new Date(new Date('4/1/2024').toLocaleDateString('en-US', { timeZone: 'America/Los_Angeles' })),
+		end: new Date(new Date('6/9/2024').toLocaleDateString('en-US', { timeZone: 'America/Los_Angeles' })),
 		excludedDates: ['20240329', '20240527']
-	}
+	},
+	fall2024: {
+		start: new Date(new Date('9/23/2024').toLocaleDateString('en-US', { timeZone: 'America/Los_Angeles' })),
+		end: new Date(new Date('12/8/2024').toLocaleDateString('en-US', { timeZone: 'America/Los_Angeles' })),
+		excludedDates: ['20241111', '20241128', '20241129']
+	},
 }
 
 // conversion from weekday string to number
-const weekdays = {'M': 0, 'Tu': 1, 'W': 2, 'Th': 3, 'F': 4, 'Sa': 5, 'Su': 6};
+const weekdays = { 'M': 0, 'Tu': 1, 'W': 2, 'Th': 3, 'F': 4, 'Sa': 5, 'Su': 6 };
 
 // list of string to split schedule into respective separate courses, keywords at the end of courses
 const splitCourseToEventsAfter = ["Enrolled Drop Change", "Planned Remove Enroll", /Waitlist \([\d]+\) Drop Change/gm]
@@ -76,7 +76,7 @@ const gradingOptions = ["L", "P/NP"];
 
 // NOTE: both of these should no longer be needed with the HTML version of the schedule
 // list of common errors in OCR, and their replacements
-const commonErrors = [[" ВОО ", " B00 "], [" DOO ", " D00 "], [" BOO ", " B00 "], [ " COO ", " C00 "], [" AOO " , " A00 "], [" EOO ", " E00 "], [" FOO ", " F00 "], [" GOO ", " G00 "]];
+const commonErrors = [[" ВОО ", " B00 "], [" DOO ", " D00 "], [" BOO ", " B00 "], [" COO ", " C00 "], [" AOO ", " A00 "], [" EOO ", " E00 "], [" FOO ", " F00 "], [" GOO ", " G00 "]];
 // list of strings to omit from the OCR output
 const omittedStrings = ["|", "=", "<", "Y"];
 
@@ -929,4 +929,4 @@ const deptString = `<tbody>
 </tr>
 </tbody>`;
 
-module.exports = {deptString, acceptedWeekdays, splitCourseToEventsAfter, splitCourseToEventsBefore, gradingOptions, commonErrors, weekdays, academicQuarters, omittedStrings, timeRegexMatch};
+module.exports = { deptString, acceptedWeekdays, splitCourseToEventsAfter, splitCourseToEventsBefore, gradingOptions, commonErrors, weekdays, academicQuarters, omittedStrings, timeRegexMatch };
