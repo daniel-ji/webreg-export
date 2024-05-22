@@ -54,6 +54,21 @@ const academicQuarters = {
 		end: new Date(new Date('6/9/2024').toLocaleDateString('en-US', { timeZone: 'America/Los_Angeles' })),
 		excludedDates: ['20240329', '20240527']
 	},
+	summerSession12024: {
+		start: new Date(new Date('7/1/2024').toLocaleDateString('en-US', { timeZone: 'America/Los_Angeles' })),
+		end: new Date(new Date('8/4/2024').toLocaleDateString('en-US', { timeZone: 'America/Los_Angeles' })),
+		excludedDates: [],
+	},
+	summerSession22024: {
+		start: new Date(new Date('8/5/2024').toLocaleDateString('en-US', { timeZone: 'America/Los_Angeles' })),
+		end: new Date(new Date('9/8/2024').toLocaleDateString('en-US', { timeZone: 'America/Los_Angeles' })),
+		excludedDates: [],
+	},
+	specialSession2024: {
+		start: new Date(new Date('6/17/2024').toLocaleDateString('en-US', { timeZone: 'America/Los_Angeles' })),
+		end: new Date(new Date('9/21/2024').toLocaleDateString('en-US', { timeZone: 'America/Los_Angeles' })),
+		excludedDates: [],
+	},
 	fall2024: {
 		start: new Date(new Date('9/23/2024').toLocaleDateString('en-US', { timeZone: 'America/Los_Angeles' })),
 		end: new Date(new Date('12/8/2024').toLocaleDateString('en-US', { timeZone: 'America/Los_Angeles' })),

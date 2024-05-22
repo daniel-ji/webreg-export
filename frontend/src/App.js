@@ -87,7 +87,7 @@ export class App extends Component {
 	setSchedule = (file) => {
 		const scheduleFile = new FormData();
 
-		if (file.type === 'text/html' || file.type === '' && file.name.endsWith('.webarchive')) {
+		if (file.type === 'text/html' || (file.type === '' && file.name.endsWith('.webarchive'))) {
 			if (file.type === 'text/html') {
 				scheduleFile.append("html", file, "schedule.html")
 			} else if (file.type === '' && file.name.endsWith('.webarchive')) {
@@ -103,6 +103,11 @@ export class App extends Component {
 			alert('Please make sure that you have uploaded the correct file (usually named webregMain.html).')
 			this.setState({ scheduleFile: undefined, scheduleFileName: undefined })
 		}
+	}
+
+	clearSchedule = (e) => {
+		e.target.value = null;
+		this.setState({ scheduleFile: undefined, scheduleFileName: undefined, scheduleData: undefined, scheduleICS: undefined, scheduleChanged: false })
 	}
 
 	// Send schedule to backend and create json data / ics file
@@ -229,7 +234,7 @@ export class App extends Component {
 					<label className="mb-4 mt-2 no-select d-flex flex-column" id="drag-drop-schedule" htmlFor="set-schedule">
 						<p className="mb-2">Drag / Paste WebReg Here (or click to upload)</p>
 						{this.state.scheduleFile && <p className="m-0"><br /><strong>Uploaded file: {this.state.scheduleFileName}</strong></p>}
-						<input className="form-control my-2 d-none" type="file" name="set-schedule" id="set-schedule" onChange={(e) => this.setSchedule(e.target.files[0])} onClick={(e) => e.target.value = null} />
+						<input className="form-control my-2 d-none" type="file" name="set-schedule" id="set-schedule" onChange={(e) => this.setSchedule(e.target.files[0])} onClick={this.clearSchedule} />
 					</label>
 					<label htmlFor="select-quarter" className="mt-4 mb-3">
 						<h4>Select Academic Quarter</h4>
@@ -238,6 +243,9 @@ export class App extends Component {
 						<option value="N/a">Select Schedule's Academic Quarter</option>
 						<option value="winter2024">Winter 2024</option>
 						<option value="spring2024">Spring 2024</option>
+						<option value="summerSession12024">Summer Session 1 2024</option>
+						<option value="summerSession22024">Summer Session 2 2024</option>
+						<option value="specialSession2024">Special Summer Session 2024</option>
 						<option value="fall2024">Fall 2024</option>
 					</select>
 				</div>
