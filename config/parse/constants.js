@@ -70,7 +70,7 @@ const academicQuarters = {
 		excludedDates: [],
 	},
 	fall2024: {
-		start: new Date(new Date('9/23/2024').toLocaleDateString('en-US', { timeZone: 'America/Los_Angeles' })),
+		start: new Date(new Date('9/26/2024').toLocaleDateString('en-US', { timeZone: 'America/Los_Angeles' })),
 		end: new Date(new Date('12/8/2024').toLocaleDateString('en-US', { timeZone: 'America/Los_Angeles' })),
 		excludedDates: ['20241111', '20241128', '20241129']
 	},
