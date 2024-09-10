@@ -5,9 +5,6 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 
 const session = require('cookie-session')
-const authFunctions = require('./config/authFunctions');
-const passport = require('passport')
-const GoogleStrategy = require('passport-google-oauth2').Strategy;
 
 const rateLimit = require('express-rate-limit')
 const cors = require('cors');
@@ -16,7 +13,6 @@ const helmet = require('helmet');
 require('dotenv').config()
 
 const indexRouter = require('./routes/index');
-const authRouter = require('./routes/auth');
 
 const app = express();
 
@@ -45,7 +41,7 @@ app.use(hpp());
 
 // CORS
 const corsOptions = {
-		origin: 'http://localhost:3000',
+		origin: process.env.NODE_ENV === "production" ? undefined : 'http://localhost:3000',
 		credentials: true
 };
 app.use(cors(corsOptions));
@@ -60,20 +56,6 @@ app.use(session({
     }
 }))
 
-// Passport
-app.use(passport.initialize());
-app.use(passport.session())
-
-passport.use(new GoogleStrategy({
-    clientID: process.env.GOOGLE_CLIENT_ID,
-    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: "http://localhost:8000/auth/google/callback",
-    passReqToCallback: true
-}, authFunctions.verify))
-
-passport.serializeUser(authFunctions.serializeUser)
-passport.deserializeUser(authFunctions.deserializeUser)
-
 // default expres-generator middleware setup
 app.use(logger('dev'));
 app.use(express.json());
@@ -83,9 +65,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // routes
 app.use('/api', indexRouter);
-// app.use('/api/auth', authRouter);
 
-// serve frontend website static assets if in production
+// serve frontend website static assets if in production / staging
 if (process.env.NODE_ENV === "production" || process.env.NODE_ENV === "staging") {
     app.use(express.static(path.join(__dirname, 'frontend/build')))
     app.get("*", (req, res) => {

@@ -47,14 +47,6 @@ router.get('/', (req, res, next) => {
 	return res.sendStatus(200);
 });
 
-// log out user, for passport / google oauth, partially implemented
-// router.get('/logout', (req, res, next) => {
-// 	req.logOut((err) => {
-// 		if (err) return res.sendStatus(500);
-// 		res.redirect('/')
-// 	});
-// })
-
 // convert html to ICS, returns 400 if no image or quarter is provided, 500 if error occurs
 router.post('/converthtml', upload.single('html'), (req, res, next) => {
 	console.log(req.file.size / 1000 + ' KB');

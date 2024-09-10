@@ -25,7 +25,7 @@ function getText(html) {
  * @param {String} text text containing schedule
  * @param {String} academicQuarter academic quarter of schedule, e.g. 'Winter2023' (see constants.js)
  * @param {Boolean} [json=false] whether the text is already in JSON format or not  
- * @returns 
+ * @returns {Array} array of ICS data objects, each representing a course event
  */
 function getICS(text, academicQuarter, json = false) {
 	const jsonText = json ? text : getJSON(text);

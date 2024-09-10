@@ -197,19 +197,6 @@ export class App extends Component {
 		saveAs(new Blob([this.state.scheduleICS], { type: "text/plain;charset=utf-8" }), "UCSD Schedule.ics");
 	}
 
-	// exportSchedule = () => {
-	// 	if (!this.validRequest()) {
-	// 		return;
-	// 	}
-
-	// 	if (this.state.scheduleChanged) {
-	// 		this.sendSchedule(this.exportSchedule);
-	// 		return;
-	// 	}
-
-	// 	saveAs(new Blob([this.state.scheduleICS], {type: "text/plain;charset=utf-8"}), "UCSD Schedule.ics");
-	// }
-
 	render() {
 		return (
 			<div className="App">

@@ -275,6 +275,10 @@ const deptString = `<tbody>
 <td>Contemporary Issues</td>
 </tr>
 <tr>
+<td>COSE</td>
+<td>Convergent Systems Engineering</td>
+</tr>
+<tr>
 <td>CSE</td>
 <td>Computer Science and Engineering</td>
 </tr>
@@ -449,6 +453,10 @@ const deptString = `<tbody>
 <tr>
 <td>HINE</td>
 <td>History of the Near East</td>
+</tr>
+<tr>
+<td>HISA</td>
+<td>History of South Asia</td>
 </tr>
 <tr>
 <td>HISC</td>
@@ -717,6 +725,10 @@ const deptString = `<tbody>
 <tr>
 <td>ORTH</td>
 <td>Orthopedics</td>
+</tr>
+<tr>
+<td>PAE</td>
+<td>Physician Assistant Education</td>
 </tr>
 <tr>
 <td>PATH</td>
