@@ -44,11 +44,6 @@ const timeRegexMatch = /[0-9]{1,2}:[0-9]{2}[ap]-[0-9]{1,2}:[0-9]{2}[ap]/gm;
 
 // a list of academic quarters' start, end, and holidays
 const academicQuarters = {
-	winter2024: {
-		start: new Date(new Date('1/8/2024').toLocaleDateString('en-US', { timeZone: 'America/Los_Angeles' })),
-		end: new Date(new Date('3/17/2024').toLocaleDateString('en-US', { timeZone: 'America/Los_Angeles' })),
-		excludedDates: ['20240115', '20240219']
-	},
 	spring2024: {
 		start: new Date(new Date('4/1/2024').toLocaleDateString('en-US', { timeZone: 'America/Los_Angeles' })),
 		end: new Date(new Date('6/9/2024').toLocaleDateString('en-US', { timeZone: 'America/Los_Angeles' })),
@@ -74,6 +69,11 @@ const academicQuarters = {
 		end: new Date(new Date('12/8/2024').toLocaleDateString('en-US', { timeZone: 'America/Los_Angeles' })),
 		excludedDates: ['20240923', '20240924', '20240925', '20241111', '20241128', '20241129']
 	},
+	winter2025: {
+		start: new Date(new Date('1/6/2025').toLocaleDateString('en-US', { timeZone: 'America/Los_Angeles' })),
+		end: new Date(new Date('3/16/2025').toLocaleDateString('en-US', { timeZone: 'America/Los_Angeles' })),
+		excludedDates: ['20250120', '20250217']
+	}
 }
 
 // conversion from weekday string to number
