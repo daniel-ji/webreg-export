@@ -30,7 +30,7 @@ export class App extends Component {
 			scheduleStatus: '',
 			scheduleError: false,
 			// schedule's academic quarter
-			scheduleQuarter: "winter2025",
+			scheduleQuarter: "spring2025",
 			// whether or not to resend schedule to backend
 			scheduleChanged: true,
 		}
