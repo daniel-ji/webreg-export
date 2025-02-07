@@ -228,12 +228,9 @@ export class App extends Component {
 					</label>
 					<select id="select-quarter" className="form-select" aria-label="Academic Quarter" onChange={this.setScheduleQuarter} value={this.state.scheduleQuarter}>
 						<option value="N/a">Select Schedule's Academic Quarter</option>
-						<option value="spring2024">Spring 2024</option>
-						<option value="summerSession12024">Summer Session 1 2024</option>
-						<option value="summerSession22024">Summer Session 2 2024</option>
-						<option value="specialSession2024">Special Summer Session 2024</option>
 						<option value="fall2024">Fall 2024</option>
 						<option value="winter2025">Winter 2025</option>
+						<option value="spring2025">Spring 2025</option>
 					</select>
 				</div>
 				<button className="btn btn-primary mt-4 mb-3" onClick={this.downloadSchedule}>Download Schedule (ICS Format)</button>

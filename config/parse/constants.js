@@ -73,7 +73,22 @@ const academicQuarters = {
 		start: new Date(new Date('1/6/2025').toLocaleDateString('en-US', { timeZone: 'America/Los_Angeles' })),
 		end: new Date(new Date('3/16/2025').toLocaleDateString('en-US', { timeZone: 'America/Los_Angeles' })),
 		excludedDates: ['20250120', '20250217']
-	}
+	},
+	spring2025: {
+		start: new Date(new Date('3/31/2025').toLocaleDateString('en-US', { timeZone: 'America/Los_Angeles' })),
+		end: new Date(new Date('6/8/2025').toLocaleDateString('en-US', { timeZone: 'America/Los_Angeles' })),
+		excludedDates: ['20250328', '20250526']
+	},
+	summerSession12025: {
+		start: new Date(new Date('6/30/2025').toLocaleDateString('en-US', { timeZone: 'America/Los_Angeles' })),
+		end: new Date(new Date('8/3/2025').toLocaleDateString('en-US', { timeZone: 'America/Los_Angeles' })),
+		excludedDates: ['20250704'],
+	},
+	summerSession22025: {
+		start: new Date(new Date('8/4/2025').toLocaleDateString('en-US', { timeZone: 'America/Los_Angeles' })),
+		end: new Date(new Date('9/7/2025').toLocaleDateString('en-US', { timeZone: 'America/Los_Angeles' })),
+		excludedDates: ['20250901'],
+	},
 }
 
 // conversion from weekday string to number
