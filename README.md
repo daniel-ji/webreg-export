@@ -2,7 +2,7 @@
 
 A simple web app to export your WebReg schedule to an ICS file, which can then be imported into Google Calendar, Apple Calendar, Outlook, etc.
 
-Built using a React frontend and a Express & Node backend. Uses Google Vision API for OCR when parsing the WebReg schedule image.
+Built using a React frontend and a Express & Node backend. Parses provided html data with regular expressions to then construct a ICS file. 
 
 Created by: Daniel Ji (daji@ucsd.edu) with the help of Owen Miller, Emmett Pangan, and Ethan Han. 
 
