@@ -231,12 +231,17 @@ export class App extends Component {
 						<option value="fall2024">Fall 2024</option>
 						<option value="winter2025">Winter 2025</option>
 						<option value="spring2025">Spring 2025</option>
+						<option value="summerSession12025">Summer Session I 2025</option>
+						<option value="summerSession22025">Summer Session II 2025</option>
 					</select>
 				</div>
 				<button className="btn btn-primary mt-4 mb-3" onClick={this.downloadSchedule}>Download Schedule (ICS Format)</button>
 				<p style={{ color: this.state.scheduleError ? "#DC3545" : "#198754" }}>{this.state.scheduleStatus}</p>
 				{/* TODO: Update */}
-				<p className="mb-4 w-100 px-5 text-center"><strong>Having Trouble? Chrome</strong> works best! Fill out this form <a href="https://forms.gle/iCZ6Fu5Lv9gBEXLk8" target="_blank" rel="noreferrer">https://forms.gle/iCZ6Fu5Lv9gBEXLk8</a> and we'll get back to you ASAP!</p>
+				<p className="mb-4 w-100 px-5 text-center"><strong>Having Trouble? Chrome</strong> works best! Fill out this form <a href="https://forms.gle/iCZ6Fu5Lv9gBEXLk8" target="_blank" rel="noreferrer">https://forms.gle/iCZ6Fu5Lv9gBEXLk8</a> and we'll get back to you ASAP!
+					<br />
+					<strong>Note:</strong> Special Summer Session dates are not supported yet, because of their variable start and end dates.
+				</p>
 				<div className="my-4 content" id="next-steps">
 					<h4 className="mb-4">Next Steps - Adding Downloaded (ICS) Schedule to Google Calendar</h4>
 					<p>To import your downloaded schedule (a .ics file) into Google Calendar, follow these steps:</p>
