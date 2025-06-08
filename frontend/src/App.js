@@ -30,7 +30,7 @@ export class App extends Component {
 			scheduleStatus: '',
 			scheduleError: false,
 			// schedule's academic quarter
-			scheduleQuarter: "spring2025",
+			scheduleQuarter: "fall2025",
 			// whether or not to resend schedule to backend
 			scheduleChanged: true,
 		}
@@ -233,6 +233,7 @@ export class App extends Component {
 						<option value="spring2025">Spring 2025</option>
 						<option value="summerSession12025">Summer Session I 2025</option>
 						<option value="summerSession22025">Summer Session II 2025</option>
+						<option value="fall2025">Fall 2025</option>
 					</select>
 				</div>
 				<button className="btn btn-primary mt-4 mb-3" onClick={this.downloadSchedule}>Download Schedule (ICS Format)</button>
