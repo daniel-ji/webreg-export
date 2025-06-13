@@ -89,6 +89,11 @@ const academicQuarters = {
 		end: new Date(new Date('9/7/2025').toLocaleDateString('en-US', { timeZone: 'America/Los_Angeles' })),
 		excludedDates: ['20250901'],
 	},
+	fall2025: {
+		start: new Date(new Date('9/25/2025').toLocaleDateString('en-US', { timeZone: 'America/Los_Angeles' })),
+		end: new Date(new Date('12/5/2025').toLocaleDateString('en-US', { timeZone: 'America/Los_Angeles' })),
+		excludedDates: ['20250922', '20250923', '20250924', '20251111', '20251127', '20251128']
+	},
 }
 
 // conversion from weekday string to number
