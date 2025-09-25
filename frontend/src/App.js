@@ -89,11 +89,11 @@ export class App extends Component {
 	setSchedule = (file) => {
 		const scheduleFile = new FormData();
 
-		if (file.type === 'text/html' || (file.type === '' && file.name.endsWith('.webarchive'))) {
-			if (file.type === 'text/html') {
-				scheduleFile.append("html", file, "schedule.html")
-			} else if (file.type === '' && file.name.endsWith('.webarchive')) {
+		if (file.type === 'text/html' || (file.name.endsWith('.webarchive'))) {
+			if (file.name.endsWith('.webarchive')) {
 				scheduleFile.append("html", file, "schedule.webarchive")
+			} else if (file.type === 'text/html') {
+				scheduleFile.append("html", file, "schedule.html")
 			}
 
 			const fileReader = new FileReader();
