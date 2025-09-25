@@ -10,6 +10,8 @@ import './App.scss';
 import locateImportImg from './assets/images/locate-import.png';
 import importButtonImg from './assets/images/import-button.png';
 import importCalImg from './assets/images/import-cal.png';
+import saveSafari from './assets/images/save-safari.png';
+import saveChrome from './assets/images/save-chrome.png';
 
 export class App extends Component {
 	constructor(props) {
@@ -143,6 +145,7 @@ export class App extends Component {
 					finished = true;
 					this.setStatus("Done!")
 					this.setState({ scheduleData: JSON.parse(res.data), scheduleICS: value }, callback)
+					document.getElementById("next-steps-title").scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
 				}).catch(err => {
 					finished = true;
 					this.setState({ scheduleData: undefined, scheduleICS: undefined })
@@ -201,7 +204,7 @@ export class App extends Component {
 		return (
 			<div className="App">
 				<h1 className="mt-5 text-center">UCSD WebReg Calendar App</h1>
-				<div className="mt-4 footnote text-center w-100" id="footnote">
+				<div className="mt-4 px-3 footnote text-center w-100" id="footnote">
 					<p>Turn your WebReg schedule into an .ics file that can be imported into your calendar (Google Calendar, Apple Calendar, etc.)</p>
 					<p><strong>Privacy is our utmost concern. No uploaded files or personal information is ever shared or saved.</strong></p>
 				</div>
@@ -212,9 +215,19 @@ export class App extends Component {
 							Go to your WebReg schedule (<a href="https://act.ucsd.edu/webreg2" rel="noreferrer" target="_blank">https://act.ucsd.edu/webreg2</a>) and select a term / quarter.
 						</li>
 						<li>
-							Right click on the page and "Save As..." <strong>Webpage, Complete (Chrome, Firefox) OR Web Archive (Safari)</strong>.<br />  (It should save a file called webregMain.html or webregMain.webarchive or something similar).
+							Right click on the page and "Save as..." or "Save Page As..." with the format / type as <strong>Webpage, Complete (Chrome, Firefox) OR Web Archive (Safari)</strong>.<br />  (It should save a file called webregMain.html or webregMain.webarchive or something similar).
 						</li>
 					</ol>
+					<div className="d-flex space-evenly flex-wrap my-4 ">
+						<div className="d-flex flex-column align-items-center mb-3 adaptive-img">
+							<h5>Chrome, Firefox:</h5>
+							<img className='p-2' style={{ maxWidth: '95%', border: '3px solid black' }} src={saveChrome} alt="Saving WebReg page in Chrome" />
+						</div>
+						<div className="d-flex flex-column align-items-center mb-3 adaptive-img">
+							<h5>Safari:</h5>
+							<img className='p-2' style={{ maxWidth: '95%', border: '3px solid black' }} src={saveSafari} alt="Saving WebReg page in Safari" />
+						</div>
+					</div>
 				</div>
 				<div className="mb-2 d-flex flex-column content">
 					<h4 className="mb-3">Upload your saved WebReg file:</h4>
@@ -244,12 +257,12 @@ export class App extends Component {
 					<strong>Note:</strong> Special Summer Session dates are not supported yet, because of their variable start and end dates.
 				</p>
 				<div className="my-4 content" id="next-steps">
-					<h4 className="mb-4">Next Steps - Adding Downloaded (ICS) Schedule to Google Calendar</h4>
+					<h4 className="mb-4" id="next-steps-title">Next Steps - Adding Downloaded (ICS) Schedule to Google Calendar</h4>
 					<p>To import your downloaded schedule (a .ics file) into Google Calendar, follow these steps:</p>
 					<ol>
 						<li>Locate 'Other calendars' on the left sidebar of your Google Calendar, near the bottom. <strong>Press the plus sign.</strong></li>
 						<img className="my-3" style={{ maxHeight: '80vh' }} src={locateImportImg} alt="Locating the import button" /><br />
-						<li className="my-4">Select 'Import'.</li>
+						<li className="my-4">Select 'Import'. Alternatively, select 'Create new calendar' to create a new calendar for your schedule (and then select 'Import' after).</li>
 						<img className="my-3" style={{ maxHeight: '40vh' }} src={importButtonImg} alt="The import button" /><br />
 						<li>In the new window, select the ICS file you downloaded. </li>
 						<li>Select the calendar you would like to import it into.</li>
