@@ -232,7 +232,7 @@ function getJSON(text) {
 		const courseCode = courseDetails[0] + " " + courseDetails[1];
 		let courseName = courseDetails.slice(2).join(" ");
 
-		console.log(splitCourse);
+		console.log(splitCourse.join("<BREAK>"));
 
 		// add back space after comma or period (removed from no space delimiter when parsing the image)
 		courseName = courseName.replaceAll(',', ', ');
