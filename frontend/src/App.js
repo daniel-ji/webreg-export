@@ -32,7 +32,7 @@ export class App extends Component {
 			scheduleStatus: '',
 			scheduleError: false,
 			// schedule's academic quarter
-			scheduleQuarter: "fall2025",
+			scheduleQuarter: "winter2026",
 			// whether or not to resend schedule to backend
 			scheduleChanged: true,
 		}
@@ -241,12 +241,11 @@ export class App extends Component {
 					</label>
 					<select id="select-quarter" className="form-select" aria-label="Academic Quarter" onChange={this.setScheduleQuarter} value={this.state.scheduleQuarter}>
 						<option value="N/a">Select Schedule's Academic Quarter</option>
-						<option value="fall2024">Fall 2024</option>
-						<option value="winter2025">Winter 2025</option>
 						<option value="spring2025">Spring 2025</option>
 						<option value="summerSession12025">Summer Session I 2025</option>
 						<option value="summerSession22025">Summer Session II 2025</option>
 						<option value="fall2025">Fall 2025</option>
+						<option value="winter2026">Winter 2026</option>
 					</select>
 				</div>
 				<button className="btn btn-primary mt-4 mb-3" onClick={this.downloadSchedule}>Download Schedule (ICS Format)</button>
