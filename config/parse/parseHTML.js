@@ -264,8 +264,11 @@ function getJSON(text) {
 
 				// for the main course event (like lecture), it will have a professor, grade option, and units, so add those
 				if (!constants.acceptedWeekdays.includes(splitCourseArray[0])) {
-					// keep on adding words to professor until we reach a valid weekday
-					while (splitCourseArray.length !== 0 && !constants.gradingOptions.includes(splitCourseArray[0]) && isNaN(splitCourseArray[0])) {
+					// keep on adding words to professor until we reach a grade option or units (which are either a number or in the grading options list)
+					while (splitCourseArray.length !== 0
+						// edge case where professor name is the same as a grading option, but there are more words after it (e.g. "L" is a grading option, but "L" is also a professor name)
+						&& (!constants.gradingOptions.includes(splitCourseArray[0]) || constants.gradingOptions.includes(splitCourseArray[0]) && splitCourseArray.length > 1 && constants.gradingOptions.includes(splitCourseArray[1]))
+						&& isNaN(splitCourseArray[0])) {
 						professor += splitCourseArray.shift() + " ";
 					}
 					professor = professor.trim();
