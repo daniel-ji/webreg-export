@@ -18,10 +18,16 @@ html, body {
     width: 100%;
     cursor: copy;
     transition: 0.5s;
+
+    &:hover {
+        border-color: #6c757d;
+    }
 }
 
 .dragged-over {
-    background-color: rgb(230, 230, 230);
+    background-color: rgba(25, 135, 84, 0.1);
+    border-color: #198754 !important;
+    box-shadow: 0 0 10px rgba(25, 135, 84, 0.3);
 }
 
 .sched-img-prev {

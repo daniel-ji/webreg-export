@@ -12,15 +12,9 @@ const constants = require('../config/parse/constants');
 // Import quarter management modules
 const {
 	getAvailableQuarters,
-	getAllQuarters,
-	initializeQuarters
+	getAllQuarters
 } = require('../config/quarterManager');
 const { getQuarterAcademicEvents } = require('../config/academicCalendarService');
-
-// Initialize quarters file on startup
-initializeQuarters().catch(err => {
-	console.error('Failed to initialize quarters:', err);
-});
 
 // multer storage for uploaded schedule photos
 const storage = multer.diskStorage({
