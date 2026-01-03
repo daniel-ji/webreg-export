@@ -31,9 +31,9 @@ initializeQuarters()
 	.then(() => console.log('[STARTUP] Quarter data updated successfully'))
 	.catch(err => console.error('[STARTUP] Quarter initialization error:', err.message));
 
-// Weekly quarter update (Sundays at 3am)
-cron.schedule('0 3 * * 0', () => {
-	console.log('[CRON] Running weekly quarter update...');
+// Quarterly update (1st of Jan, Apr, Jul, Oct at 3am)
+cron.schedule('0 3 1 1,4,7,10 *', () => {
+	console.log('[CRON] Running quarterly quarter update...');
 	updateCurrentQuarters()
 		.then(() => console.log('[CRON] Quarter update completed'))
 		.catch(err => console.error('[CRON] Quarter update failed:', err.message));

@@ -52,25 +52,25 @@ async function saveQuarters(quarters) {
 }
 
 /**
- * Clean up old quarters (older than 2 years)
+ * Clean up old quarters (older than 1 year)
  * @param {Object} quarters - Current quarters data
  * @returns {Object} Cleaned quarters data
  */
 function cleanupOldQuarters(quarters) {
-  const twoYearsAgo = new Date();
-  twoYearsAgo.setFullYear(twoYearsAgo.getFullYear() - 2);
+  const oneYearAgo = new Date();
+  oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
 
   const cleaned = {};
   // Use environment variable for quarters to maintain
-  const minQuartersToKeep = parseInt(process.env.QUARTERS_TO_MAINTAIN) || 6;
+  const minQuartersToKeep = parseInt(process.env.QUARTERS_TO_MAINTAIN) || 4;
 
-  // Sort quarters by start date
+  // Sort quarters by start date (newest first)
   const sortedQuarters = Object.entries(quarters)
     .sort((a, b) => (b[1].start || 0) - (a[1].start || 0));
 
   // Keep recent quarters and minimum number
   sortedQuarters.forEach(([key, data], index) => {
-    if (index < minQuartersToKeep || (data.start && data.start > twoYearsAgo)) {
+    if (index < minQuartersToKeep || (data.start && data.start > oneYearAgo)) {
       cleaned[key] = data;
     }
   });
