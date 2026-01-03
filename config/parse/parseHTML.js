@@ -190,8 +190,8 @@ function getRecurrence(courseEvent, academicQuarter) {
 
 	// gets start time of class as array, e.g (['7', '00p']), without it, exclusion dates don't work
 	const startTime = courseEvent.time.split("-")[0].split(":");
-	// converts academic quarter end to ics format
-	const endDate = academicQuarter.end.toISOString().replaceAll(/[-:.]/gm, '');
+	// converts academic quarter end to ics format (slice removes milliseconds for valid ICS format)
+	const endDate = academicQuarter.end.toISOString().slice(0, 19).replaceAll(/[-:]/gm, '') + 'Z';
 	// gets exclusion dates and converts to ics format
 	const exDate = academicQuarter.excludedDates.map((date) => {
 		const hour = (parseInt(startTime[0]) + ((startTime[1].slice(-1) === 'p' && startTime[0] !== '12') ? 12 : 0)) + '';

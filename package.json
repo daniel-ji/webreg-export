@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon ./bin/www",
+    "start": "nodemon --ignore config/quarters.json ./bin/www",
     "heroku-postbuild": "cd frontend && npm install && npm run build"
   },
   "dependencies": {
