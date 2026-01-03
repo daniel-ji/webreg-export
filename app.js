@@ -13,12 +13,16 @@ const helmet = require('helmet');
 require('dotenv').config()
 
 const indexRouter = require('./routes/index');
+const { validateAdminSecurity } = require('./config/adminAuth');
 
 const app = express();
 
 // Initialization
 fs.rmSync('./tmp/uploads', { recursive: true, force: true })
 fs.mkdirSync('./tmp/uploads')
+
+// Validate admin security configuration
+validateAdminSecurity();
 
 // Rate Limiting
 const limiter = rateLimit({
@@ -39,9 +43,10 @@ app.use(helmet.contentSecurityPolicy({
 // HPP
 app.use(hpp());
 
-// CORS
+// CORS - In production, disable CORS (same-origin only) for security
+// In development, allow localhost:3000 for frontend dev server
 const corsOptions = {
-		origin: process.env.NODE_ENV === "production" ? undefined : 'http://localhost:3000',
+		origin: process.env.NODE_ENV === "production" ? false : 'http://localhost:3000',
 		credentials: true
 };
 app.use(cors(corsOptions));

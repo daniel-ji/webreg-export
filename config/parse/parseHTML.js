@@ -21,15 +21,19 @@ function getText(html) {
 
 /**
  * Returns ICS data from provided text, academic quarter, and whether the text is already in JSON format or not.
- * 
+ *
  * @param {String} text text containing schedule
  * @param {String} academicQuarter academic quarter of schedule, e.g. 'Winter2023' (see constants.js)
- * @param {Boolean} [json=false] whether the text is already in JSON format or not  
+ * @param {Boolean} [json=false] whether the text is already in JSON format or not
+ * @param {Object} [quarterData=null] optional quarter data object with start, end, and excludedDates
  * @returns {Array} array of ICS data objects, each representing a course event
  */
-function getICS(text, academicQuarter, json = false) {
+function getICS(text, academicQuarter, json = false, quarterData = null) {
 	const jsonText = json ? text : getJSON(text);
 	const ICSData = [];
+
+	// Use provided quarter data or fall back to constants
+	const quarter = quarterData || constants.academicQuarters[academicQuarter];
 
 	// loop through each course event and create ICS event
 	for (const courseEvent of jsonText) {
@@ -50,7 +54,7 @@ function getICS(text, academicQuarter, json = false) {
 		// get startDay of course event, either exam day or first day of class
 		const start = (courseEvent.courseType === 'FI' || courseEvent.courseType === 'MI') ?
 			getExamDay(courseEvent) :
-			getStartDay(new Date(constants.academicQuarters[academicQuarter].start), courseEvent);
+			getStartDay(new Date(quarter.start), courseEvent);
 
 		// creates location link for event description 
 		const locationLink = courseEvent.building !== undefined && courseEvent.building !== 'TBA' ?
@@ -71,7 +75,7 @@ Grade Option: ${courseEvent.gradeOption}, Units: ${courseEvent.units}`,
 			startOutputType: 'local',
 			duration: getDuration(courseEvent),
 			location: courseEvent.building === undefined ? undefined : `${courseEvent.building} ${courseEvent.room}`,
-			recurrenceRule: getRecurrence(courseEvent, constants.academicQuarters[academicQuarter])
+			recurrenceRule: getRecurrence(courseEvent, quarter)
 		})
 	}
 

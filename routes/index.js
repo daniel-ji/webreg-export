@@ -1,3 +1,4 @@
+// routes/index.js
 const fs = require('fs');
 
 const express = require('express');
@@ -7,6 +8,21 @@ const multer = require('multer');
 
 const parseHTML = require('../config/parse/parseHTML');
 const constants = require('../config/parse/constants');
+
+// Import quarter management modules
+const {
+	getAvailableQuarters,
+	updateCurrentQuarters,
+	getAllQuarters,
+	initializeQuarters
+} = require('../config/quarterManager');
+const { getQuarterAcademicEvents } = require('../config/academicCalendarService');
+const { adminMiddleware } = require('../config/adminAuth');
+
+// Initialize quarters file on startup
+initializeQuarters().catch(err => {
+	console.error('Failed to initialize quarters:', err);
+});
 
 // multer storage for uploaded schedule photos
 const storage = multer.diskStorage({
@@ -47,26 +63,114 @@ router.get('/', (req, res, next) => {
 	return res.sendStatus(200);
 });
 
-// convert html to ICS, returns 400 if no image or quarter is provided, 500 if error occurs
-router.post('/converthtml', upload.single('html'), (req, res, next) => {
-	console.log(req.file.size / 1000 + ' KB');
-	// delete file after 10 seconds
-	if (req.file) {
-		setTimeout(() => {
-			fs.unlink(req.file.path, (err) => {
-				if (err) {
-					console.log(err);
-				}
+/**
+ * GET /quarters - Returns available quarters with default selection
+ */
+router.get('/quarters', async (req, res) => {
+	try {
+		const quartersData = await getAvailableQuarters();
+		return res.json(quartersData);
+	} catch (error) {
+		console.error('Error fetching quarters:', error);
+		return res.status(500).json({ message: 'Failed to load academic quarters' });
+	}
+});
+
+/**
+ * POST /update-quarters - Admin-protected endpoint to manually trigger quarter updates
+ */
+router.post('/update-quarters', adminMiddleware(), async (req, res) => {
+	try {
+		console.log('Admin triggered quarter update');
+		const updatedQuarters = await updateCurrentQuarters();
+		const quarterCount = Object.keys(updatedQuarters).length;
+		return res.json({
+			success: true,
+			message: `Updated ${quarterCount} quarters`,
+			quarters: Object.keys(updatedQuarters)
+		});
+	} catch (error) {
+		console.error('Error updating quarters:', error);
+		return res.status(500).json({
+			success: false,
+			message: 'Failed to update quarters: ' + error.message
+		});
+	}
+});
+
+/**
+ * GET /academic-calendar/:quarter - Get academic calendar events for a quarter
+ */
+router.get('/academic-calendar/:quarter', async (req, res) => {
+	try {
+		const quarterKey = req.params.quarter;
+		const quarters = await getAllQuarters();
+
+		if (!quarters[quarterKey]) {
+			return res.status(400).json({
+				message: `Invalid quarter: ${quarterKey}`
 			});
-		}, 10000)
+		}
+
+		const events = await getQuarterAcademicEvents(quarterKey, quarters[quarterKey]);
+		return res.json({ events });
+	} catch (error) {
+		console.error('Error fetching academic calendar:', error);
+		return res.status(500).json({
+			message: 'Failed to fetch academic calendar events'
+		});
+	}
+});
+
+/**
+ * POST /converthtml - Convert HTML schedule to ICS format
+ * Returns JSON: { events: [...], warnings: [...] }
+ */
+router.post('/converthtml', upload.single('html'), async (req, res, next) => {
+	// REQ-2: Check file exists BEFORE accessing properties
+	if (!req.file) {
+		return res.status(400).json({ message: 'No file uploaded. Please upload your WebReg schedule.' });
 	}
 
-	// if no file or invalid quarter, invalid request, return 400
-	if (!req.file || !Object.keys(constants.academicQuarters).includes(req.body.quarter)) {
-		return res.sendStatus(400);
+	console.log(req.file.size / 1000 + ' KB');
+
+	// Delete file after 10 seconds
+	setTimeout(() => {
+		fs.unlink(req.file.path, (err) => {
+			if (err) {
+				console.log(err);
+			}
+		});
+	}, 10000);
+
+	// Track warnings for partial failures
+	const warnings = [];
+
+	// Get all quarters (dynamic + static)
+	let quarters;
+	try {
+		quarters = await getAllQuarters();
+	} catch (error) {
+		console.error('Error loading quarters:', error);
+		// Fallback to static quarters
+		quarters = constants.academicQuarters;
+		warnings.push('Using cached quarter data');
 	}
 
-	// try to parse image, if error occurs, return 500
+	// REQ-4: Specific error messages for invalid quarter
+	if (!req.body.quarter) {
+		return res.status(400).json({ message: 'No quarter selected. Please select an academic quarter.' });
+	}
+
+	if (!quarters[req.body.quarter]) {
+		return res.status(400).json({
+			message: `Invalid quarter: "${req.body.quarter}". Please select a valid academic quarter.`
+		});
+	}
+
+	const quarterData = quarters[req.body.quarter];
+
+	// Parse the schedule
 	try {
 		const html = fs.readFileSync(req.file.path, 'utf8');
 
@@ -75,13 +179,29 @@ router.post('/converthtml', upload.single('html'), (req, res, next) => {
 			text = parseHTML.getText(html);
 		} catch (error) {
 			console.log(error);
-			return res.status(500).send(error.message);
+			return res.status(500).json({ message: error.message });
 		}
-		return res.json(JSON.stringify(parseHTML.getICS(text, req.body.quarter)))
+
+		// Get ICS events with dynamic quarter data
+		const events = parseHTML.getICS(text, req.body.quarter, false, quarterData);
+
+		// REQ-8: Include academic calendar events if requested
+		if (req.body.includeAcademicCalendar === 'true') {
+			try {
+				const academicEvents = await getQuarterAcademicEvents(req.body.quarter, quarterData);
+				events.push(...academicEvents);
+			} catch (error) {
+				console.error('Failed to fetch academic calendar:', error);
+				warnings.push('Could not fetch academic calendar events');
+			}
+		}
+
+		// REQ-3: Return proper JSON structure, not double-encoded string
+		return res.json({ events, warnings });
 	} catch (error) {
 		console.log(error);
-		return res.status(500).send('Server error when creating schedule. Please try again later.');
+		return res.status(500).json({ message: 'Server error when creating schedule. Please try again later.' });
 	}
-})
+});
 
 module.exports = router;

@@ -1,0 +1,142 @@
+{
+  "spring2024": {
+    "start": "2024-04-01T07:00:00.000Z",
+    "end": "2024-06-09T07:00:00.000Z",
+    "excludedDates": [
+      "20240329",
+      "20240527"
+    ],
+    "metadata": {
+      "createdAt": "2026-01-03T05:25:12.502Z",
+      "source": "manual",
+      "lastUpdated": "2026-01-03T05:25:12.502Z"
+    }
+  },
+  "summerSession12024": {
+    "start": "2024-07-01T07:00:00.000Z",
+    "end": "2024-08-04T07:00:00.000Z",
+    "excludedDates": [],
+    "metadata": {
+      "createdAt": "2026-01-03T05:25:12.502Z",
+      "source": "manual",
+      "lastUpdated": "2026-01-03T05:25:12.502Z"
+    }
+  },
+  "summerSession22024": {
+    "start": "2024-08-05T07:00:00.000Z",
+    "end": "2024-09-08T07:00:00.000Z",
+    "excludedDates": [],
+    "metadata": {
+      "createdAt": "2026-01-03T05:25:12.502Z",
+      "source": "manual",
+      "lastUpdated": "2026-01-03T05:25:12.502Z"
+    }
+  },
+  "specialSession2024": {
+    "start": "2024-06-17T07:00:00.000Z",
+    "end": "2024-09-21T07:00:00.000Z",
+    "excludedDates": [],
+    "metadata": {
+      "createdAt": "2026-01-03T05:25:12.502Z",
+      "source": "manual",
+      "lastUpdated": "2026-01-03T05:25:12.502Z"
+    }
+  },
+  "fall2024": {
+    "start": "2024-09-23T07:00:00.000Z",
+    "end": "2024-12-08T08:00:00.000Z",
+    "excludedDates": [
+      "20240923",
+      "20240924",
+      "20240925",
+      "20241111",
+      "20241128",
+      "20241129"
+    ],
+    "metadata": {
+      "createdAt": "2026-01-03T05:25:12.502Z",
+      "source": "manual",
+      "lastUpdated": "2026-01-03T05:25:12.502Z"
+    }
+  },
+  "winter2025": {
+    "start": "2025-01-06T08:00:00.000Z",
+    "end": "2025-03-16T07:00:00.000Z",
+    "excludedDates": [
+      "20250120",
+      "20250217"
+    ],
+    "metadata": {
+      "createdAt": "2026-01-03T05:25:12.502Z",
+      "source": "manual",
+      "lastUpdated": "2026-01-03T05:25:12.502Z"
+    }
+  },
+  "spring2025": {
+    "start": "2025-03-31T07:00:00.000Z",
+    "end": "2025-06-08T07:00:00.000Z",
+    "excludedDates": [
+      "20250328",
+      "20250526"
+    ],
+    "metadata": {
+      "createdAt": "2026-01-03T05:25:12.502Z",
+      "source": "manual",
+      "lastUpdated": "2026-01-03T05:25:12.502Z"
+    }
+  },
+  "summerSession12025": {
+    "start": "2025-06-30T07:00:00.000Z",
+    "end": "2025-08-03T07:00:00.000Z",
+    "excludedDates": [
+      "20250704"
+    ],
+    "metadata": {
+      "createdAt": "2026-01-03T05:25:12.502Z",
+      "source": "manual",
+      "lastUpdated": "2026-01-03T05:25:12.502Z"
+    }
+  },
+  "summerSession22025": {
+    "start": "2025-08-04T07:00:00.000Z",
+    "end": "2025-09-07T07:00:00.000Z",
+    "excludedDates": [
+      "20250901"
+    ],
+    "metadata": {
+      "createdAt": "2026-01-03T05:25:12.502Z",
+      "source": "manual",
+      "lastUpdated": "2026-01-03T05:25:12.502Z"
+    }
+  },
+  "fall2025": {
+    "start": "2025-09-22T07:00:00.000Z",
+    "end": "2025-12-05T08:00:00.000Z",
+    "excludedDates": [
+      "20250922",
+      "20250923",
+      "20250924",
+      "20251111",
+      "20251127",
+      "20251128"
+    ],
+    "metadata": {
+      "createdAt": "2026-01-03T05:25:12.502Z",
+      "source": "manual",
+      "lastUpdated": "2026-01-03T05:25:12.502Z"
+    }
+  },
+  "winter2026": {
+    "start": "2026-01-05T08:00:00.000Z",
+    "end": "2026-03-15T07:00:00.000Z",
+    "excludedDates": [
+      "20260119",
+      "20260216"
+    ],
+    "metadata": {
+      "createdAt": "2026-01-03T05:25:12.502Z",
+      "source": "manual",
+      "lastUpdated": "2026-01-03T05:25:12.502Z"
+    }
+  }
+}

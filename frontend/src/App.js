@@ -31,15 +31,24 @@ export class App extends Component {
 			// schedule status message
 			scheduleStatus: '',
 			scheduleError: false,
-			// schedule's academic quarter
-			scheduleQuarter: "winter2026",
+			// schedule's academic quarter - empty until loaded from API
+			scheduleQuarter: "",
+			// available quarters loaded from API
+			availableQuarters: [],
+			// loading state for quarters
+			quartersLoading: true,
+			// whether to include academic calendar events
+			includeAcademicCalendar: false,
 			// whether or not to resend schedule to backend
 			scheduleChanged: true,
 		}
 	}
 
 	componentDidMount() {
-		// drag and drop schedule feature 
+		// Load quarters from API
+		this.loadQuarters();
+
+		// drag and drop schedule feature
 		const dragDropSchedule = document.getElementById('drag-drop-schedule');
 		['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
 			dragDropSchedule.addEventListener(eventName, (e) => {
@@ -75,6 +84,26 @@ export class App extends Component {
 
 	setScheduleQuarter = (e) => {
 		this.setState({ scheduleQuarter: e.target.value, scheduleChanged: true })
+	}
+
+	loadQuarters = async () => {
+		try {
+			const response = await axios.get('/api/quarters');
+			const { quarters, default: defaultQuarter } = response.data;
+
+			this.setState({
+				availableQuarters: quarters,
+				scheduleQuarter: defaultQuarter || '',
+				quartersLoading: false
+			});
+		} catch (error) {
+			console.error('Failed to load quarters:', error);
+			this.setState({
+				quartersLoading: false,
+				scheduleStatus: 'Failed to load academic quarters. Please refresh the page.',
+				scheduleError: true
+			});
+		}
 	}
 
 	setStatus = (status, error) => {
@@ -118,6 +147,8 @@ export class App extends Component {
 			const scheduleFile = this.state.scheduleFile;
 			// add quarter to form data
 			scheduleFile.append("quarter", this.state.scheduleQuarter);
+			// add academic calendar option
+			scheduleFile.append("includeAcademicCalendar", this.state.includeAcademicCalendar);
 
 			// set delay to true, update schedule file, and send schedule
 			this.setState({ sendScheduleDelay: true, scheduleFile, scheduleChanged: false }, () => {
@@ -134,22 +165,37 @@ export class App extends Component {
 
 				// send request
 				axios.post(`/api/converthtml`, this.state.scheduleFile).then(res => {
-					const { error, value } = createEvents(JSON.parse(res.data))
+					// Response is now { events: [...], warnings: [...] }
+					const { events, warnings } = res.data;
+					const { error, value } = createEvents(events);
 
 					if (error || value === undefined || value.length === 0) {
 						this.setStatus("Error creating schedule. Please try again later.", true)
 						throw error;
 					}
 
-					// update finished to prevent timeout error, update state / status, call callback
+					// update finished to prevent timeout error, update state / status
 					finished = true;
-					this.setStatus("Done!")
-					this.setState({ scheduleData: JSON.parse(res.data), scheduleICS: value }, callback)
-					document.getElementById("next-steps-title").scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+
+					// Show warnings if any
+					if (warnings && warnings.length > 0) {
+						this.setStatus(`Done! Warning: ${warnings[0]}`, false);
+					} else {
+						this.setStatus("Done!");
+					}
+
+					this.setState({ scheduleData: events, scheduleICS: value }, () => {
+						document.getElementById("next-steps-title").scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+						if (callback) callback();
+					});
 				}).catch(err => {
 					finished = true;
 					this.setState({ scheduleData: undefined, scheduleICS: undefined })
-					this.setStatus(err.response?.data ?? "Error creating schedule. Please try again later.", true)
+					// Handle new error response format { message: "..." }
+					const errorMsg = err.response?.data?.message
+						|| err.response?.data
+						|| "Error creating schedule. Please try again later.";
+					this.setStatus(errorMsg, true)
 				})
 			})
 
@@ -170,7 +216,7 @@ export class App extends Component {
 			errorMessage += "Please upload a schedule. "
 		}
 
-		if (this.state.scheduleQuarter === "N/a") {
+		if (!this.state.scheduleQuarter || this.state.scheduleQuarter === "") {
 			errorMessage += "Please select an academic quarter. "
 		}
 
@@ -239,14 +285,37 @@ export class App extends Component {
 					<label htmlFor="select-quarter" className="mt-4 mb-3">
 						<h4>Select Academic Quarter</h4>
 					</label>
-					<select id="select-quarter" className="form-select" aria-label="Academic Quarter" onChange={this.setScheduleQuarter} value={this.state.scheduleQuarter}>
-						<option value="N/a">Select Schedule's Academic Quarter</option>
-						<option value="spring2025">Spring 2025</option>
-						<option value="summerSession12025">Summer Session I 2025</option>
-						<option value="summerSession22025">Summer Session II 2025</option>
-						<option value="fall2025">Fall 2025</option>
-						<option value="winter2026">Winter 2026</option>
+					<select
+						id="select-quarter"
+						className="form-select"
+						aria-label="Academic Quarter"
+						onChange={this.setScheduleQuarter}
+						value={this.state.scheduleQuarter}
+						disabled={this.state.quartersLoading}
+					>
+						{this.state.quartersLoading ? (
+							<option value="">Loading quarters...</option>
+						) : (
+							<>
+								<option value="">Select Schedule's Academic Quarter</option>
+								{this.state.availableQuarters.map(q => (
+									<option key={q.value} value={q.value}>{q.label}</option>
+								))}
+							</>
+						)}
 					</select>
+					<div className="form-check mt-3">
+						<input
+							type="checkbox"
+							className="form-check-input"
+							id="include-academic-calendar"
+							checked={this.state.includeAcademicCalendar}
+							onChange={(e) => this.setState({ includeAcademicCalendar: e.target.checked, scheduleChanged: true })}
+						/>
+						<label className="form-check-label" htmlFor="include-academic-calendar">
+							Include UCSD academic calendar events (holidays, deadlines)
+						</label>
+					</div>
 				</div>
 				<button className="btn btn-primary mt-4 mb-3" onClick={this.downloadSchedule}>Download Schedule (ICS Format)</button>
 				<p style={{ color: this.state.scheduleError ? "#DC3545" : "#198754" }}>{this.state.scheduleStatus}</p>
