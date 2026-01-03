@@ -1,4 +1,3 @@
-// TODO: Bug: after bad request can still download file
 // TODO: remove unnecessary dependencies from frontend and backend
 import React, { Component } from 'react'
 import axios from 'axios';
@@ -150,8 +149,8 @@ export class App extends Component {
 			// add academic calendar option
 			scheduleFile.append("includeAcademicCalendar", this.state.includeAcademicCalendar);
 
-			// set delay to true, update schedule file, and send schedule
-			this.setState({ sendScheduleDelay: true, scheduleFile, scheduleChanged: false }, () => {
+			// set delay to true, clear stale data, update schedule file, and send schedule
+			this.setState({ sendScheduleDelay: true, scheduleFile, scheduleChanged: false, scheduleData: undefined, scheduleICS: undefined }, () => {
 				let finished = false;
 				this.setStatus("Processing...")
 

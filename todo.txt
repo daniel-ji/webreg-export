@@ -1,11 +1,11 @@
 need to do:
 
-double upload photo bug
-ui update on drag and drop
+double upload photo bug (n/a?)
+ui update on drag and drop - done
 
 deleting tmp files 
 - set a timeout for 60s and delete everything that's over a minute old  
-
+  - done
 - handling points of failure
     - and accordingly giving out an error
 - data validation
