@@ -4,7 +4,7 @@ A simple web app to export your WebReg schedule to an ICS file, which can then b
 
 Built using a React frontend and a Express & Node backend. Parses provided html data with regular expressions to then construct a ICS file. 
 
-Created by: Daniel Ji (daji@ucsd.edu) with the help of Owen Miller, Emmett Pangan, and Ethan Han. 
+Created by: Daniel Ji (daji@ucsd.edu) with the help of Owen Miller, Emmett Pangan, Ethan Han, and Zakir Alibhai.
 
 Feedback form: https://forms.gle/iCZ6Fu5Lv9gBEXLk8
 
