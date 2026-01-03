@@ -12,12 +12,10 @@ const constants = require('../config/parse/constants');
 // Import quarter management modules
 const {
 	getAvailableQuarters,
-	updateCurrentQuarters,
 	getAllQuarters,
 	initializeQuarters
 } = require('../config/quarterManager');
 const { getQuarterAcademicEvents } = require('../config/academicCalendarService');
-const { adminMiddleware } = require('../config/adminAuth');
 
 // Initialize quarters file on startup
 initializeQuarters().catch(err => {
@@ -73,28 +71,6 @@ router.get('/quarters', async (req, res) => {
 	} catch (error) {
 		console.error('Error fetching quarters:', error);
 		return res.status(500).json({ message: 'Failed to load academic quarters' });
-	}
-});
-
-/**
- * POST /update-quarters - Admin-protected endpoint to manually trigger quarter updates
- */
-router.post('/update-quarters', adminMiddleware(), async (req, res) => {
-	try {
-		console.log('Admin triggered quarter update');
-		const updatedQuarters = await updateCurrentQuarters();
-		const quarterCount = Object.keys(updatedQuarters).length;
-		return res.json({
-			success: true,
-			message: `Updated ${quarterCount} quarters`,
-			quarters: Object.keys(updatedQuarters)
-		});
-	} catch (error) {
-		console.error('Error updating quarters:', error);
-		return res.status(500).json({
-			success: false,
-			message: 'Failed to update quarters: ' + error.message
-		});
 	}
 });
 

@@ -12,8 +12,9 @@ const hpp = require('hpp');
 const helmet = require('helmet');
 require('dotenv').config()
 
+const cron = require('node-cron');
 const indexRouter = require('./routes/index');
-const { validateAdminSecurity } = require('./config/adminAuth');
+const { updateCurrentQuarters, initializeQuarters } = require('./config/quarterManager');
 
 const app = express();
 
@@ -21,8 +22,40 @@ const app = express();
 fs.rmSync('./tmp/uploads', { recursive: true, force: true })
 fs.mkdirSync('./tmp/uploads')
 
-// Validate admin security configuration
-validateAdminSecurity();
+// Initialize quarters and schedule automatic updates
+initializeQuarters()
+	.then(() => {
+		console.log('[STARTUP] Quarters initialized, fetching updates...');
+		return updateCurrentQuarters();
+	})
+	.then(() => console.log('[STARTUP] Quarter data updated successfully'))
+	.catch(err => console.error('[STARTUP] Quarter initialization error:', err.message));
+
+// Weekly quarter update (Sundays at 3am)
+cron.schedule('0 3 * * 0', () => {
+	console.log('[CRON] Running weekly quarter update...');
+	updateCurrentQuarters()
+		.then(() => console.log('[CRON] Quarter update completed'))
+		.catch(err => console.error('[CRON] Quarter update failed:', err.message));
+});
+
+// Cleanup orphaned upload files every 30 seconds (files older than 1 minute)
+setInterval(() => {
+	const uploadDir = './tmp/uploads';
+	const maxAge = 60000; // 1 minute
+	fs.readdir(uploadDir, (err, files) => {
+		if (err) return;
+		const now = Date.now();
+		files.forEach(file => {
+			const filePath = `${uploadDir}/${file}`;
+			fs.stat(filePath, (err, stats) => {
+				if (!err && now - stats.mtimeMs > maxAge) {
+					fs.unlink(filePath, () => {});
+				}
+			});
+		});
+	});
+}, 30000);
 
 // Rate Limiting
 const limiter = rateLimit({
