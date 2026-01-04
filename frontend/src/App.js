@@ -145,8 +145,10 @@ export class App extends Component {
 		if (!this.state.sendScheduleDelay) {
 			const scheduleFile = this.state.scheduleFile;
 			// add quarter to form data
+			if (scheduleFile.has("quarter")) scheduleFile.delete("quarter");
 			scheduleFile.append("quarter", this.state.scheduleQuarter);
 			// add academic calendar option
+			if (scheduleFile.has("includeAcademicCalendar")) scheduleFile.delete("includeAcademicCalendar");
 			scheduleFile.append("includeAcademicCalendar", this.state.includeAcademicCalendar);
 
 			// set delay to true, clear stale data, update schedule file, and send schedule
