@@ -4,10 +4,10 @@
     "end": "2027-09-03T07:00:00.000Z",
     "excludedDates": [],
     "metadata": {
-      "createdAt": "2026-01-04T03:06:10.654Z",
+      "createdAt": "2026-01-04T03:45:07.679Z",
       "source": "auto",
       "academicYear": "2026-2027",
-      "lastUpdated": "2026-01-04T03:06:10.654Z"
+      "lastUpdated": "2026-01-04T03:45:07.679Z"
     }
   },
   "summerSession12027": {
@@ -17,10 +17,10 @@
       "20270705"
     ],
     "metadata": {
-      "createdAt": "2026-01-04T03:06:10.533Z",
+      "createdAt": "2026-01-04T03:45:07.561Z",
       "source": "auto",
       "academicYear": "2026-2027",
-      "lastUpdated": "2026-01-04T03:06:10.533Z"
+      "lastUpdated": "2026-01-04T03:45:07.561Z"
     }
   },
   "spring2027": {
@@ -30,10 +30,10 @@
       "20270531"
     ],
     "metadata": {
-      "createdAt": "2026-01-04T03:06:10.416Z",
+      "createdAt": "2026-01-04T03:45:07.463Z",
       "source": "auto",
       "academicYear": "2026-2027",
-      "lastUpdated": "2026-01-04T03:06:10.416Z"
+      "lastUpdated": "2026-01-04T03:45:07.463Z"
     }
   },
   "winter2027": {
@@ -44,10 +44,10 @@
       "20270118"
     ],
     "metadata": {
-      "createdAt": "2026-01-04T03:06:10.255Z",
+      "createdAt": "2026-01-04T03:45:07.371Z",
       "source": "auto",
       "academicYear": "2026-2027",
-      "lastUpdated": "2026-01-04T03:06:10.255Z"
+      "lastUpdated": "2026-01-04T03:45:07.371Z"
     }
   },
   "fall2026": {
@@ -58,10 +58,10 @@
       "20261111"
     ],
     "metadata": {
-      "createdAt": "2026-01-04T03:06:10.128Z",
+      "createdAt": "2026-01-04T03:45:07.283Z",
       "source": "auto",
       "academicYear": "2026-2027",
-      "lastUpdated": "2026-01-04T03:06:10.128Z"
+      "lastUpdated": "2026-01-04T03:45:07.283Z"
     }
   },
   "summerSession22026": {
@@ -69,10 +69,10 @@
     "end": "2026-09-04T07:00:00.000Z",
     "excludedDates": [],
     "metadata": {
-      "createdAt": "2026-01-04T03:06:09.996Z",
+      "createdAt": "2026-01-04T03:45:07.189Z",
       "source": "auto",
       "academicYear": "2025-2026",
-      "lastUpdated": "2026-01-04T03:06:09.996Z"
+      "lastUpdated": "2026-01-04T03:45:07.189Z"
     }
   },
   "summerSession12026": {
@@ -82,10 +82,10 @@
       "20260703"
     ],
     "metadata": {
-      "createdAt": "2026-01-04T03:06:09.840Z",
+      "createdAt": "2026-01-04T03:45:07.095Z",
       "source": "auto",
       "academicYear": "2025-2026",
-      "lastUpdated": "2026-01-04T03:06:09.840Z"
+      "lastUpdated": "2026-01-04T03:45:07.095Z"
     }
   },
   "spring2026": {
@@ -95,10 +95,10 @@
       "20260525"
     ],
     "metadata": {
-      "createdAt": "2026-01-04T03:06:09.659Z",
+      "createdAt": "2026-01-04T03:45:07.000Z",
       "source": "auto",
       "academicYear": "2025-2026",
-      "lastUpdated": "2026-01-04T03:06:09.659Z"
+      "lastUpdated": "2026-01-04T03:45:07.000Z"
     }
   },
   "winter2026": {
@@ -109,10 +109,10 @@
       "20260216"
     ],
     "metadata": {
-      "createdAt": "2026-01-04T03:06:09.482Z",
+      "createdAt": "2026-01-04T03:45:06.912Z",
       "source": "auto",
       "academicYear": "2025-2026",
-      "lastUpdated": "2026-01-04T03:06:09.482Z"
+      "lastUpdated": "2026-01-04T03:45:06.912Z"
     }
   },
   "fall2025": {
@@ -123,10 +123,10 @@
       "20251127"
     ],
     "metadata": {
-      "createdAt": "2026-01-04T03:06:09.268Z",
+      "createdAt": "2026-01-04T03:45:06.794Z",
       "source": "auto",
       "academicYear": "2025-2026",
-      "lastUpdated": "2026-01-04T03:06:09.268Z"
+      "lastUpdated": "2026-01-04T03:45:06.794Z"
     }
   },
   "summerSession22025": {
