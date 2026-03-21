@@ -42,7 +42,7 @@ const upload = multer({
 		console.log('User Agent: ' + ua);
 		console.log('Mimetype: ' + file.mimetype);;
 		if (req.path === '/converthtml' && (file.mimetype === 'text/html'
-			|| (file.mimetype === 'application/octet-stream' && file.originalname.endsWith('.webarchive')))) {
+			|| ((file.mimetype === 'application/octet-stream' || file.mimetype === 'application/x-webarchive' || file.mimetype === 'application/x-safari-webarchive') && file.originalname.endsWith('.webarchive')))) {
 			return cb(null, true);
 		}
 
